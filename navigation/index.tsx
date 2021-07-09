@@ -14,5 +14,10 @@ export type HomeTabParamList = {
 }
 
 export type DeckDetailRouteProp = RouteProp<RootStackParamList, "DeckDetail">;
-
 export type DeckDetailNavigationProp = StackNavigationProp<RootStackParamList, "DeckDetail">;
+
+export type AddCardRouteProp = RouteProp<RootStackParamList, "AddCard">;
+export type AddCardNavigationProp = StackNavigationProp<RootStackParamList, "AddCard">;
+
+export type QuizRouteProp = RouteProp<RootStackParamList, "Quiz">;
+export type QuizNavigationProp = StackNavigationProp<RootStackParamList, "Quiz">;

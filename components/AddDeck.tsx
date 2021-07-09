@@ -47,7 +47,7 @@ function AddDeckView(
         onSubmit: () => void
     }
 ) {
-    const addDeckDisabledStyle = submitDisabled ? addDeckStyles.SubmitDisabled : null
+    const submitDisabledStyle = submitDisabled ? addDeckStyles.SubmitDisabled : null
 
     return (
         <View style={addDeckStyles.AddDeckView}>
@@ -57,7 +57,7 @@ function AddDeckView(
                 What is the name of the new deck?
             </Text>
             <TextInput
-                style={addDeckStyles.Title}
+                style={addDeckStyles.Input}
                 value={title}
                 onSubmitEditing={onSubmit}
                 onChangeText={onTitleChange}
@@ -65,7 +65,7 @@ function AddDeckView(
             />
             <TouchableOpacity
                 onPress={onSubmit}
-                style={[addDeckStyles.Submit, addDeckDisabledStyle]}
+                style={[addDeckStyles.Submit, submitDisabledStyle]}
             >
                 <Text>Add deck</Text>
             </TouchableOpacity>
@@ -85,7 +85,7 @@ const addDeckStyles = StyleSheet.create({
         marginBottom: 24,
         textAlign: "center"
     },
-    Title: {
+    Input: {
         width: "100%",
         fontSize: 12,
         borderWidth: 1,
