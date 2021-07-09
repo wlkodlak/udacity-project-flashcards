@@ -10,7 +10,8 @@ export class DecksRepositoryAsyncStorage implements DecksRepository {
         const decksJson = await AsyncStorage.getItem(ASYNC_STORAGE_KEY);
         if (!decksJson)
             return [];
-        return JSON.parse(decksJson);
+        const decks = JSON.parse(decksJson);
+        return Object.values(decks);
     }
 
     async getDeck(deckId: string): Promise<DeckState | undefined> {

@@ -14,5 +14,8 @@ export interface DecksRepository {
 export * from './DecksRepositoryInMemory'
 export * from './DecksRepositoryAsyncStorage'
 
-export const DecksRepositoryContext = React.createContext<DecksRepository>(new DecksRepositoryInMemory())
+export const DecksRepositoryContext = React.createContext<DecksRepository>(
+    new DecksRepositoryAsyncStorage()
+)
+
 export const useDecksRepository = (): DecksRepository => useContext(DecksRepositoryContext)

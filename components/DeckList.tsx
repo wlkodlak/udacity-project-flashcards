@@ -1,16 +1,40 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useCallback } from 'react'
-import { View, Text, StyleSheet, VirtualizedList, Pressable, ListRenderItemInfo } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { View, Text, StyleSheet, VirtualizedList, Pressable, ListRenderItemInfo, ActivityIndicator } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import { DeckDetailNavigationProp } from '../navigation'
 import { RootState } from '../state'
-import { DecksCollection, DeckState } from '../state/decks'
+import { createInProgress, createLoaded, DecksCollection, DeckState } from '../state/decks'
+import { useDecksRepository } from '../storage'
 
 export default function DeckListScreen() {
+    const navigation = useNavigation<DeckDetailNavigationProp>()
+    const dispatch = useDispatch()
+    const repository = useDecksRepository()
+    const inProgress = useSelector((state: RootState) => state.decks.inProgress)
     const decks = useSelector((state: RootState) => state.decks.decks)
-    const navigation = useNavigation()
+
+    useEffect(() => {
+        (async () => {
+            dispatch(createInProgress())
+            const loadedDecks = await repository.getAllDecks()
+            dispatch(createLoaded(loadedDecks))
+        })()
+    }, [])
+
     const onClick = useCallback((deck: DeckState) => {
-        navigation.navigate('DeckDetail')
+        navigation.navigate('DeckDetail', { deckId: deck.id })
     }, [navigation])
+
+    if (inProgress) {
+        return (
+            <View style={deckStyles.DeckListScreen}>
+                <ActivityIndicator size="large" color="#ff0000" />
+            </View>
+        )
+    }
+
     return (
         <View style={deckStyles.DeckListScreen}>
             <DeckListView onClick={onClick} decks={decks} />
@@ -57,18 +81,49 @@ function DeckListItem({
         onClick(deck)
     }, [onClick, deck])
     return (
-        <Pressable style={deckStyles.DeckListItem} onPress={onPress}>
-            <Text style={deckStyles.DeckListItemTitle}>{deck.title}</Text>
-            <Text style={deckStyles.DeckListItemSubtitle}>{deck.cards.length} cards</Text>
+        <Pressable onPress={onPress}>
+            <DeckView deck={deck} />
         </Pressable>
     )
 }
 
-const deckStyles = StyleSheet.create({
-    DeckListScreen: {},
-    DeckListView: {},
-    DeckListItem: {},
-    DeckListItemTitle: {},
-    DeckListItemSubtitle: {}
+export function DeckView({
+    deck
+}: {
+    deck: DeckState
+}) {
+    return (
+        <View style={deckStyles.DeckListItem}>
+            <Text style={deckStyles.DeckListItemTitle}>{deck.title}</Text>
+            <Text style={deckStyles.DeckListItemSubtitle}>{deck.cards.length} cards</Text>
+        </View>
+    )
+}
+
+export const deckStyles = StyleSheet.create({
+    DeckListScreen: {
+        margin: 16
+    },
+    DeckListView: {
+    },
+    DeckListItem: {
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 1,
+        borderColor: "#333333",
+        backgroundColor: "#ffffff",
+        width: "100%",
+        height: 80,
+        marginBottom: 16
+    },
+    DeckListItemTitle: {
+        color: "#000000",
+        fontSize: 20,
+        fontWeight: "bold"
+    },
+    DeckListItemSubtitle: {
+        color: "#333333",
+        fontSize: 12
+    }
 })
 

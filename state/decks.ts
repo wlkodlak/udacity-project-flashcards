@@ -1,5 +1,5 @@
 import { Draft, produce } from 'immer'
-import { Action, AnyAction, Reducer } from 'redux'
+import { AnyAction, Reducer } from 'redux'
 
 export interface DecksState {
     readonly inProgress: boolean
@@ -35,7 +35,7 @@ export interface DeckActionInProgress {
 
 export interface DeckActionLoaded {
     readonly type: DeckActionType.Loaded
-    readonly decks: DecksCollection
+    readonly decks: DeckState[]
 }
 
 export interface DeckActionAddDeck {
@@ -60,7 +60,7 @@ export const createInProgress = (): DeckActionInProgress => ({
     type: DeckActionType.InProgress
 })
 
-export const createLoaded = (decks: DecksCollection): DeckActionLoaded => ({
+export const createLoaded = (decks: DeckState[]): DeckActionLoaded => ({
     type: DeckActionType.Loaded,
     decks: decks
 })
@@ -101,7 +101,10 @@ const recipe = (draft: Draft<DecksState>, action: DeckAction) => {
 
         case DeckActionType.Loaded:
             draft.inProgress = false
-            draft.decks = action.decks
+            draft.decks = {}
+            for (const deck of action.decks) {
+                draft.decks[deck.id] = deck
+            }
             break;
 
         case DeckActionType.AddDeck:
