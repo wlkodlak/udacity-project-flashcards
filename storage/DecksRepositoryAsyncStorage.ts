@@ -30,6 +30,7 @@ export class DecksRepositoryAsyncStorage implements DecksRepository {
         decks[deck.id] = deck;
         decksJson = JSON.stringify(decks);
         await AsyncStorage.setItem(ASYNC_STORAGE_KEY, decksJson);
+        this.notify()
     }
 
     async removeDeck(deckId: string): Promise<void> {
@@ -38,6 +39,11 @@ export class DecksRepositoryAsyncStorage implements DecksRepository {
         delete decks[deckId];
         decksJson = JSON.stringify(decks);
         await AsyncStorage.setItem(ASYNC_STORAGE_KEY, decksJson);
+        this.notify()
+    }
+
+    notify() {
+        Array.from(this.subscribers).forEach(it => it())
     }
 
     subscribe(callback: () => void): () => void {

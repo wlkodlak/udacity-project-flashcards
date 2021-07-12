@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useCallback, useState } from "react";
-import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
+import useAsyncEffect from "use-async-effect";
 import { QuizNavigationProp, QuizRouteProp } from "../navigation";
 import { DecksRepository, DeckState, useDecksRepository } from "../storage";
 import { QuizQuestionView } from "./QuizQuestionView";
@@ -59,12 +59,12 @@ export function QuizScreen({
         navigation.navigate("DeckDetail", { deckId })
     }, [])
 
-    useEffect(() => {
-        (async () => {
-            setInProgress(true)
-            setDeck(await repository.getDeck(deckId))
-            setInProgress(false)
-        })()
+    useAsyncEffect(async isMounted => {
+        setInProgress(true)
+        const newDeck = await repository.getDeck(deckId);
+        if (!isMounted()) return
+        setDeck(newDeck)
+        setInProgress(false)
     }, [repository, deckId])
 
     if (inProgress || !deck) {

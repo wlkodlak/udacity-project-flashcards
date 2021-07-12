@@ -17,11 +17,16 @@ export class DecksRepositoryInMemory implements DecksRepository {
 
     async putDeck(deck: DeckState): Promise<void> {
         this.index[deck.id] = deck;
-        this.subscribers.forEach(it => it())
+        this.notify()
     }
 
     async removeDeck(deckId: string): Promise<void> {
         delete this.index[deckId];
+        this.notify()
+    }
+
+    notify() {
+        Array.from(this.subscribers).forEach(it => it())
     }
 
     subscribe(callback: () => void): () => void {

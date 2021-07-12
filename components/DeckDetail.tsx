@@ -2,6 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native"
 import React, { useCallback, useState } from "react"
 import { useEffect } from "react"
 import { ActivityIndicator, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import useAsyncEffect from "use-async-effect"
 import { DeckDetailNavigationProp, DeckDetailRouteProp } from "../navigation"
 import { useDecksRepository, DeckState, DecksRepository } from "../storage"
 import { DeckView } from "./DeckList"
@@ -33,16 +34,17 @@ export function DeckDetailScreen({
     const [deck, setDeck] = useState<DeckState | undefined>(undefined)
 
     useEffect(() => {
-        repository.subscribe(() => setVersion(version + 1))
+        return repository.subscribe(() => {
+            setVersion(version + 1)
+        })
     }, [repository, version])
 
-    useEffect(() => {
-        (async () => {
-            setInProgress(true)
-            const loadedDeck = await repository.getDeck(deckId)
-            setInProgress(false)
-            setDeck(loadedDeck)
-        })()
+    useAsyncEffect(async isMounted => {
+        setInProgress(true)
+        const loadedDeck = await repository.getDeck(deckId)
+        if (!isMounted()) return
+        setInProgress(false)
+        setDeck(loadedDeck)
     }, [repository, version, deckId])
 
     const onAddCard = useCallback((deck: DeckState) => {

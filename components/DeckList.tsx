@@ -5,6 +5,7 @@ import { View, Text, StyleSheet, VirtualizedList, Pressable, ListRenderItemInfo,
 import { DecksNavigationProp } from '../navigation'
 import { DeckState } from '../storage/DeckState'
 import { DecksRepository, useDecksRepository } from '../storage'
+import useAsyncEffect from 'use-async-effect'
 
 export default function DeckListScreenWired() {
     const navigation = useNavigation<DecksNavigationProp>()
@@ -27,16 +28,17 @@ function DeckListScreen({
     const [version, setVersion] = useState(0)
 
     useEffect(() => {
-        repository.subscribe(() => setVersion(version + 1))
+        return repository.subscribe(() => {
+            setVersion(version + 1)
+        })
     }, [repository, version])
 
-    useEffect(() => {
-        (async () => {
-            setInProgress(true)
-            const loadedDecks = await repository.getAllDecks()
-            setInProgress(false)
-            setDecks(loadedDecks)
-        })()
+    useAsyncEffect(async isMounted => {
+        setInProgress(true)
+        const loadedDecks = await repository.getAllDecks()
+        if (!isMounted()) return
+        setInProgress(false)
+        setDecks(loadedDecks)
     }, [repository, version])
 
     const onClick = useCallback((deck: DeckState) => {
