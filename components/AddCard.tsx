@@ -1,25 +1,60 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
+import produce from "immer";
 import React, { useState } from "react";
 import { useCallback } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { AddCardNavigationProp, AddCardRouteProp } from "../navigation";
-import { createAddCard } from "../state/decks";
+import { createAddCard, DeckState } from "../state/decks";
+import { DecksRepository, useDecksRepository } from "../storage";
 
-export default function AddCardScreen() {
+export default function AddCardScreenWired() {
     const route = useRoute<AddCardRouteProp>()
     const navigation = useNavigation<AddCardNavigationProp>()
+    const repository = useDecksRepository()
     const dispatch = useDispatch()
+    return (<AddCardScreen
+        route={route}
+        navigation={navigation}
+        repository={repository}
+        dispatch={dispatch}
+    />)
+}
+
+function AddCardScreen(
+    {
+        route,
+        navigation,
+        repository,
+        dispatch
+    }: {
+        route: AddCardRouteProp,
+        navigation: AddCardNavigationProp,
+        repository: DecksRepository,
+        dispatch: Dispatch<any>
+    }
+) {
     const deckId = route.params?.deckId
 
     const [question, setQuestion] = useState("")
     const [answer, setAnswer] = useState("")
     const submitDisabled = question === "" || answer === ""
 
-    const onSubmit = useCallback(() => {
-        dispatch(createAddCard(deckId, question, answer))
+    const onSubmit = useCallback(async () => {
+        const deck = await repository.getDeck(deckId)
+        if (deck) {
+            const newDeck: DeckState = produce(deck, draft => {
+                draft.cards.push({
+                    question,
+                    answer
+                })
+            })
+            await repository.putDeck(newDeck)
+            dispatch(createAddCard(deckId, question, answer))
+        }
         navigation.navigate("DeckDetail", { deckId })
-    }, [dispatch, navigation, deckId, question, answer])
+    }, [repository, dispatch, navigation, deckId, question, answer])
 
     return (
         <AddCardView

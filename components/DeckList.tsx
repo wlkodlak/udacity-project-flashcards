@@ -1,25 +1,57 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useCallback } from 'react'
+import { useState } from 'react'
 import { useEffect } from 'react'
 import { View, Text, StyleSheet, VirtualizedList, Pressable, ListRenderItemInfo, ActivityIndicator } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import { DeckDetailNavigationProp } from '../navigation'
+import { useStore } from 'react-redux'
+import { AnyAction, Store } from 'redux'
+import { DecksNavigationProp } from '../navigation'
 import { RootState } from '../state'
 import { createInProgress, createLoaded, DecksCollection, DeckState } from '../state/decks'
-import { useDecksRepository } from '../storage'
+import { DecksRepository, useDecksRepository } from '../storage'
 
-export default function DeckListScreen() {
-    const navigation = useNavigation<DeckDetailNavigationProp>()
-    const dispatch = useDispatch()
+export default function DeckListScreenWired() {
+    const navigation = useNavigation<DecksNavigationProp>()
     const repository = useDecksRepository()
-    const inProgress = useSelector((state: RootState) => state.decks.inProgress)
-    const decks = useSelector((state: RootState) => state.decks.decks)
+    const store = useStore<RootState>()
+    return (<DeckListScreen 
+        navigation={navigation}
+        repository={repository}
+        store={store}
+    />)
+}
+
+function useStoreSelector<TState, TResult>(
+    store: Store<TState, AnyAction>,
+    selector: (state: TState) => TResult
+): TResult {
+    const extracted = selector(store.getState())
+    const [value, setValue] = useState(extracted)
+    const invalidated = useCallback(() => {
+        const changed = selector(store.getState())
+        setValue(changed)
+    }, [store])
+    useEffect(() => store.subscribe(invalidated), [store])
+    return value
+}
+
+function DeckListScreen({
+    navigation,
+    repository,
+    store   
+}: {
+    navigation: DecksNavigationProp,
+    repository: DecksRepository,
+    store: Store<RootState, AnyAction>
+}) {
+    const inProgress = useStoreSelector(store, state => state.decks.inProgress)
+    const decks = useStoreSelector(store, state => state.decks.decks)
 
     useEffect(() => {
         (async () => {
-            dispatch(createInProgress())
+            store.dispatch(createInProgress())
             const loadedDecks = await repository.getAllDecks()
-            dispatch(createLoaded(loadedDecks))
+            store.dispatch(createLoaded(loadedDecks))
         })()
     }, [])
 

@@ -2,27 +2,44 @@ import { useNavigation } from "@react-navigation/native"
 import React, { useCallback, useState } from "react"
 import { TouchableOpacity, StyleSheet, Text, TextInput, View } from "react-native"
 import { useDispatch } from "react-redux"
-import { createAddDeck, DeckState } from "../state/decks"
-import { useDecksRepository } from "../storage"
+import { Dispatch } from "redux"
+import { AddDeckNavigationProp } from "../navigation"
+import { createAddDeck } from "../state/decks"
+import { DecksRepository, useDecksRepository } from "../storage"
 
-export default function AddDeckScreen() {
+export default function AddDeckScreenWired() {
+    const navigation = useNavigation<AddDeckNavigationProp>()
+    const repository = useDecksRepository()
+    const dispatch = useDispatch()
+    return (<AddDeckScreen
+        navigation={navigation}
+        repository={repository}
+        dispatch={dispatch}
+    />)
+}
+
+function AddDeckScreen({
+    navigation,
+    repository,
+    dispatch
+}: {
+    navigation: AddDeckNavigationProp,
+    repository: DecksRepository,
+    dispatch: Dispatch<any>,
+}) {
     const [title, setTitle] = useState("")
 
     const onTitleChange = useCallback((title: string) => {
         setTitle(title)
     }, [setTitle])
 
-    const dispatch = useDispatch()
-    const decksRepository = useDecksRepository()
-    const navigation = useNavigation()
-
-    const onSubmit = useCallback(() => {
+    const onSubmit = useCallback(async () => {
         const action = createAddDeck(title)
-        decksRepository.putDeck(action.deck)
+        await repository.putDeck(action.deck)
         dispatch(action)
         setTitle("")
         navigation.navigate("Decks")
-    }, [title, decksRepository, dispatch, setTitle, navigation])
+    }, [title, repository, dispatch, setTitle, navigation])
 
     return (
         <AddDeckView
