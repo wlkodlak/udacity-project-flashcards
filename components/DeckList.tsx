@@ -1,59 +1,43 @@
 import { useNavigation } from '@react-navigation/core'
-import React, { useCallback } from 'react'
-import { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useEffect } from 'react'
 import { View, Text, StyleSheet, VirtualizedList, Pressable, ListRenderItemInfo, ActivityIndicator } from 'react-native'
-import { useStore } from 'react-redux'
-import { AnyAction, Store } from 'redux'
 import { DecksNavigationProp } from '../navigation'
-import { RootState } from '../state'
-import { createInProgress, createLoaded, DecksCollection, DeckState } from '../state/decks'
+import { DeckState } from '../storage/DeckState'
 import { DecksRepository, useDecksRepository } from '../storage'
 
 export default function DeckListScreenWired() {
     const navigation = useNavigation<DecksNavigationProp>()
     const repository = useDecksRepository()
-    const store = useStore<RootState>()
-    return (<DeckListScreen 
+    return (<DeckListScreen
         navigation={navigation}
         repository={repository}
-        store={store}
     />)
-}
-
-function useStoreSelector<TState, TResult>(
-    store: Store<TState, AnyAction>,
-    selector: (state: TState) => TResult
-): TResult {
-    const extracted = selector(store.getState())
-    const [value, setValue] = useState(extracted)
-    const invalidated = useCallback(() => {
-        const changed = selector(store.getState())
-        setValue(changed)
-    }, [store])
-    useEffect(() => store.subscribe(invalidated), [store])
-    return value
 }
 
 function DeckListScreen({
     navigation,
-    repository,
-    store   
+    repository
 }: {
     navigation: DecksNavigationProp,
-    repository: DecksRepository,
-    store: Store<RootState, AnyAction>
+    repository: DecksRepository
 }) {
-    const inProgress = useStoreSelector(store, state => state.decks.inProgress)
-    const decks = useStoreSelector(store, state => state.decks.decks)
+    const [inProgress, setInProgress] = useState(false)
+    const [decks, setDecks] = useState<DeckState[]>([])
+    const [version, setVersion] = useState(0)
+
+    useEffect(() => {
+        repository.subscribe(() => setVersion(version + 1))
+    }, [repository, version])
 
     useEffect(() => {
         (async () => {
-            store.dispatch(createInProgress())
+            setInProgress(true)
             const loadedDecks = await repository.getAllDecks()
-            store.dispatch(createLoaded(loadedDecks))
+            setInProgress(false)
+            setDecks(loadedDecks)
         })()
-    }, [])
+    }, [repository, version])
 
     const onClick = useCallback((deck: DeckState) => {
         navigation.navigate('DeckDetail', { deckId: deck.id })
@@ -74,17 +58,17 @@ function DeckListScreen({
     )
 }
 
-const DeckListViewExtractItemCount = (data: DecksCollection): number =>
-    Object.keys(data).length
+const DeckListViewExtractItemCount = (data: DeckState[]): number =>
+    data.length
 
-const DeckListViewExtractItem = (data: DecksCollection, index: number): DeckState =>
-    Object.values(data)[index]
+const DeckListViewExtractItem = (data: DeckState[], index: number): DeckState =>
+    data[index]
 
 function DeckListView({
     decks,
     onClick
 }: {
-    decks: DecksCollection,
+    decks: DeckState[],
     onClick: (deck: DeckState) => void
 }) {
     const renderItem = useCallback((item: ListRenderItemInfo<DeckState>): React.ReactElement => {

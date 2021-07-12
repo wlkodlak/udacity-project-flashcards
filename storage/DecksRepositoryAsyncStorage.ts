@@ -1,10 +1,12 @@
-import { DeckState } from '../state/decks';
+import { DeckState } from './DeckState';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DecksRepository } from './index';
+import { DecksRepository, Subscription } from './index';
 
 export const ASYNC_STORAGE_KEY = "decks"
 
 export class DecksRepositoryAsyncStorage implements DecksRepository {
+
+    private subscribers = new Set<Subscription>()
 
     async getAllDecks(): Promise<DeckState[]> {
         const decksJson = await AsyncStorage.getItem(ASYNC_STORAGE_KEY);
@@ -36,5 +38,12 @@ export class DecksRepositoryAsyncStorage implements DecksRepository {
         delete decks[deckId];
         decksJson = JSON.stringify(decks);
         await AsyncStorage.setItem(ASYNC_STORAGE_KEY, decksJson);
+    }
+
+    subscribe(callback: () => void): () => void {
+        this.subscribers.add(callback)
+        return () => {
+            this.subscribers.delete(callback)
+        }
     }
 }

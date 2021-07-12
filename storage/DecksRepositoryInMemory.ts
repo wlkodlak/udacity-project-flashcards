@@ -1,11 +1,11 @@
-import { DeckState } from '../state/decks';
-import { DecksRepository } from './index';
+import { DeckState } from './DeckState';
+import { DecksRepository, Subscription } from './index';
 
 export class DecksRepositoryInMemory implements DecksRepository {
-
     private index: {
         [id: string]: DeckState;
     } = {};
+    private subscribers = new Set<Subscription>()
 
     async getAllDecks(): Promise<DeckState[]> {
         return Object.values(this.index);
@@ -17,9 +17,17 @@ export class DecksRepositoryInMemory implements DecksRepository {
 
     async putDeck(deck: DeckState): Promise<void> {
         this.index[deck.id] = deck;
+        this.subscribers.forEach(it => it())
     }
 
     async removeDeck(deckId: string): Promise<void> {
         delete this.index[deckId];
+    }
+
+    subscribe(callback: () => void): () => void {
+        this.subscribers.add(callback)
+        return () => {
+            this.subscribers.delete(callback)
+        }
     }
 }

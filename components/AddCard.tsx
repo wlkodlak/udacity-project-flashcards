@@ -3,22 +3,17 @@ import produce from "immer";
 import React, { useState } from "react";
 import { useCallback } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { AddCardNavigationProp, AddCardRouteProp } from "../navigation";
-import { createAddCard, DeckState } from "../state/decks";
-import { DecksRepository, useDecksRepository } from "../storage";
+import { DecksRepository, useDecksRepository, DeckState } from "../storage";
 
 export default function AddCardScreenWired() {
     const route = useRoute<AddCardRouteProp>()
     const navigation = useNavigation<AddCardNavigationProp>()
     const repository = useDecksRepository()
-    const dispatch = useDispatch()
     return (<AddCardScreen
         route={route}
         navigation={navigation}
         repository={repository}
-        dispatch={dispatch}
     />)
 }
 
@@ -26,13 +21,11 @@ function AddCardScreen(
     {
         route,
         navigation,
-        repository,
-        dispatch
+        repository
     }: {
         route: AddCardRouteProp,
         navigation: AddCardNavigationProp,
-        repository: DecksRepository,
-        dispatch: Dispatch<any>
+        repository: DecksRepository
     }
 ) {
     const deckId = route.params?.deckId
@@ -51,10 +44,9 @@ function AddCardScreen(
                 })
             })
             await repository.putDeck(newDeck)
-            dispatch(createAddCard(deckId, question, answer))
         }
         navigation.navigate("DeckDetail", { deckId })
-    }, [repository, dispatch, navigation, deckId, question, answer])
+    }, [repository, navigation, deckId, question, answer])
 
     return (
         <AddCardView

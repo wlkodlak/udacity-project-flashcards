@@ -2,11 +2,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack'
 import { BottomTabBarOptions, BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import { Provider } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
-import rootReducer from './state'
 import { DecksRepositoryContext, DecksRepositoryAsyncStorage } from './storage'
 import { HomeTabParamList, RootStackParamList } from './navigation'
 import AddDeck from './components/AddDeck'
@@ -14,13 +10,6 @@ import DeckList from './components/DeckList'
 import DeckDetail from './components/DeckDetail'
 import AddCard from './components/AddCard'
 import Quiz from './components/Quiz'
-
-const store = createStore(
-  rootReducer,
-  applyMiddleware(
-    thunk
-  )
-)
 
 const decksRepository = new DecksRepositoryAsyncStorage()
 
@@ -78,31 +67,29 @@ function HomeTabs() {
 export default function App() {
   return (
     <DecksRepositoryContext.Provider value={decksRepository}>
-      <Provider store={store}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Home"
-              component={HomeTabs}
-            />
-            <Stack.Screen
-              name="DeckDetail"
-              component={DeckDetail}
-              options={deckDetailStackOptions}
-            />
-            <Stack.Screen
-              name="AddCard"
-              component={AddCard}
-              options={addCardStackOptions}
-            />
-            <Stack.Screen
-              name="Quiz"
-              component={Quiz}
-              options={quizStackOptions}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Provider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Home"
+            component={HomeTabs}
+          />
+          <Stack.Screen
+            name="DeckDetail"
+            component={DeckDetail}
+            options={deckDetailStackOptions}
+          />
+          <Stack.Screen
+            name="AddCard"
+            component={AddCard}
+            options={addCardStackOptions}
+          />
+          <Stack.Screen
+            name="Quiz"
+            component={Quiz}
+            options={quizStackOptions}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </DecksRepositoryContext.Provider>
   );
 }

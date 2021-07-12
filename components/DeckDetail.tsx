@@ -1,22 +1,49 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
-import { StackNavigationProp } from "@react-navigation/stack"
-import React, { useCallback } from "react"
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native"
-import { useDispatch, useSelector } from "react-redux"
+import React, { useCallback, useState } from "react"
+import { useEffect } from "react"
+import { ActivityIndicator, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { DeckDetailNavigationProp, DeckDetailRouteProp } from "../navigation"
-import { RootState } from "../state"
-import { createRemoveDeck, DeckState } from "../state/decks"
-import { useDecksRepository } from "../storage"
+import { useDecksRepository, DeckState, DecksRepository } from "../storage"
 import { DeckView } from "./DeckList"
 
-export default function DeckDetailScreen() {
+export default function DeckDetailScreenWired() {
     const navigation = useNavigation<DeckDetailNavigationProp>()
     const route = useRoute<DeckDetailRouteProp>()
-    const deckId = route.params?.deckId
-    const decks = useSelector((state: RootState) => state.decks.decks)
-    const deck = decks[deckId]
-    const dispatch = useDispatch()
     const repository = useDecksRepository()
+
+    return (<DeckDetailScreen
+        route={route}
+        navigation={navigation}
+        repository={repository}
+    />)
+}
+
+export function DeckDetailScreen({
+    route,
+    navigation,
+    repository
+}: {
+    route: DeckDetailRouteProp,
+    navigation: DeckDetailNavigationProp,
+    repository: DecksRepository
+}) {
+    const deckId = route.params?.deckId
+    const [inProgress, setInProgress] = useState(false)
+    const [version, setVersion] = useState(0)
+    const [deck, setDeck] = useState<DeckState | undefined>(undefined)
+
+    useEffect(() => {
+        repository.subscribe(() => setVersion(version + 1))
+    }, [repository, version])
+
+    useEffect(() => {
+        (async () => {
+            setInProgress(true)
+            const loadedDeck = await repository.getDeck(deckId)
+            setInProgress(false)
+            setDeck(loadedDeck)
+        })()
+    }, [repository, version, deckId])
 
     const onAddCard = useCallback((deck: DeckState) => {
         navigation.push("AddCard", { deckId })
@@ -26,20 +53,27 @@ export default function DeckDetailScreen() {
         navigation.push("Quiz", { deckId })
     }, [deckId])
 
-    const onDeleteDeck = useCallback((deck: DeckState) => {
-        dispatch(createRemoveDeck(deckId))
-        repository.removeDeck(deckId)
+    const onDeleteDeck = useCallback(async (deck: DeckState) => {
+        await repository.removeDeck(deckId)
         navigation.navigate("Home", { screen: "Decks" })
     }, [deckId])
 
-    return (
-        <DeckDetailView
-            deck={deck}
-            onAddCard={onAddCard}
-            onStartQuiz={onStartQuiz}
-            onDeleteDeck={onDeleteDeck}
-        />
-    )
+    if (inProgress || !deck) {
+        return (
+            <View>
+                <ActivityIndicator size="large" color="#ff0000" />
+            </View>
+        )
+    } else {
+        return (
+            <DeckDetailView
+                deck={deck}
+                onAddCard={onAddCard}
+                onStartQuiz={onStartQuiz}
+                onDeleteDeck={onDeleteDeck}
+            />
+        )
+    }
 }
 
 function DeckDetailView(
