@@ -20,14 +20,14 @@ export function QuizResultsView({
             <Text style={quizResultsStyles.Number}>Done</Text>
 
             <View style={quizResultsStyles.ScoreContainer}>
-                <Text style={quizResultsStyles.Number}>Quiz complete!</Text>
+                <Text style={quizResultsStyles.ScoreLabel}>Quiz complete!</Text>
                 <Text style={isGoodScore ? quizResultsStyles.ScoreGood : quizResultsStyles.ScoreBad}>
                     {correctCount} / {totalCount}
                 </Text>
             </View>
 
             <View style={quizResultsStyles.ScoreContainer}>
-                <Text style={quizResultsStyles.Number}>Percentage correct</Text>
+                <Text style={quizResultsStyles.ScoreLabel}>Percentage correct</Text>
                 <Text style={isGoodScore ? quizResultsStyles.ScoreGood : quizResultsStyles.ScoreBad}>
                     {percentage.toFixed(0)}%
                 </Text>
@@ -39,18 +39,17 @@ export function QuizResultsView({
                     onPress={onRestart}
                     style={quizResultsStyles.RestartButton}
                 >
-                    <Text>Restart quiz</Text>
+                    <Text style={quizResultsStyles.RestartButtonText}>Restart quiz</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     onPress={onBackToDeck}
                     style={quizResultsStyles.BackButton}
                 >
-                    <Text>Back to deck</Text>
+                    <Text style={quizResultsStyles.BackButtonText}>Back to deck</Text>
                 </TouchableOpacity>
 
             </View>
-
 
         </View>
     );
@@ -59,7 +58,9 @@ export function QuizResultsView({
 const quizResultsStyles = StyleSheet.create({
     Screen: {
         flexDirection: "column",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        height: "100%",
+        padding: 16
     },
     Number: {
         alignSelf: "flex-start",
@@ -70,6 +71,7 @@ const quizResultsStyles = StyleSheet.create({
     },
     ScoreContainer: {
         width: "100%",
+        alignItems: "center"
     },
     ScoreLabel: {
         width: "100%",
@@ -80,7 +82,7 @@ const quizResultsStyles = StyleSheet.create({
     },
     ScoreGood: {
         width: "100%",
-        color: "#00ff00",
+        color: "#008800",
         fontSize: 32,
         fontWeight: "normal",
         textAlign: "center"
@@ -93,17 +95,21 @@ const quizResultsStyles = StyleSheet.create({
         textAlign: "center"
     },
     ButtonsContainer: {
-        width: "100%"
+        width: "100%",
+        marginBottom: 48,
+        alignItems: "center"
     },
     RestartButton: {
         width: "80%",
-        backgroundColor: "#00ff00",
-        color: "#ffffff",
+        backgroundColor: "#008800",
         paddingStart: 12,
         paddingEnd: 12,
         paddingTop: 8,
         paddingBottom: 8,
         borderRadius: 4,
+    },
+    RestartButtonText: {
+        color: "#ffffff",
         fontSize: 14,
         textAlign: "center"
     },
@@ -116,6 +122,12 @@ const quizResultsStyles = StyleSheet.create({
         paddingTop: 8,
         paddingBottom: 8,
         borderRadius: 4,
+        fontSize: 14,
+        textAlign: "center",
+        marginTop: 16
+    },
+    BackButtonText: {
+        color: "#ffffff",
         fontSize: 14,
         textAlign: "center"
     },

@@ -141,7 +141,7 @@ function DeckDetailView(
 
 const deckDetailStyles = StyleSheet.create({
     DeckDetailScreen: {
-        margin: 16,
+        padding: 16,
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-around",

@@ -112,6 +112,7 @@ function AddCardView({
 
             <TouchableOpacity
                 onPress={onSubmit}
+                disabled={submitDisabled}
                 style={[addCardStyles.Submit, submitDisabledStyle]}
             >
                 <Text>Add deck</Text>
@@ -125,7 +126,7 @@ function AddCardView({
 const addCardStyles = StyleSheet.create({
     AddCardView: {
         flexDirection: "column",
-        margin: 16,
+        padding: 16,
         justifyContent: "space-around",
         alignItems: "center",
         height: "100%"

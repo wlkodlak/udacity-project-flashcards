@@ -120,7 +120,8 @@ export function DeckView({
 
 export const deckStyles = StyleSheet.create({
     DeckListScreen: {
-        margin: 16
+        padding: 16,
+        height: "100%"
     },
     DeckListView: {
     },

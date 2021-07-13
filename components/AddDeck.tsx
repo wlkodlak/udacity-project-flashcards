@@ -78,6 +78,7 @@ function AddDeckView(
             />
             <TouchableOpacity
                 onPress={onSubmit}
+                disabled={submitDisabled}
                 style={[addDeckStyles.Submit, submitDisabledStyle]}
             >
                 <Text>Add deck</Text>
@@ -89,13 +90,14 @@ function AddDeckView(
 const addDeckStyles = StyleSheet.create({
     AddDeckView: {
         flexDirection: "column",
-        margin: 16,
+        padding: 16,
         alignItems: "center"
     },
     Message: {
         width: "100%",
         fontSize: 32,
         marginBottom: 24,
+        marginTop: 48,
         textAlign: "center"
     },
     Input: {

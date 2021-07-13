@@ -28,7 +28,7 @@ export function QuizQuestionView({
             <Text style={quizQuestionStyles.Text}>{shownText}</Text>
 
             <Pressable onPress={onPressFlip}>
-                <Text>{flipText}</Text>
+                <Text style={quizQuestionStyles.FlipButton}>{flipText}</Text>
             </Pressable>
 
             <View style={quizQuestionStyles.ButtonsContainer}>
@@ -55,10 +55,11 @@ export function QuizQuestionView({
 
 const quizQuestionStyles = StyleSheet.create({
     QuestionScreen: {
+        padding: 16,
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: "#cccccc"
+        height: "100%"
     },
     Number: {
         alignSelf: "flex-start",
@@ -77,10 +78,13 @@ const quizQuestionStyles = StyleSheet.create({
     FlipButton: {
         color: "#ff0000",
         fontSize: 12,
-        fontWeight: "normal",
+        fontWeight: "normal"
     },
     ButtonsContainer: {
-        width: "100%"
+        width: "100%",
+        flexDirection: "column",
+        alignItems: "center",
+        marginBottom: 48
     },
     CorrectButton: {
         width: "80%",
@@ -104,6 +108,7 @@ const quizQuestionStyles = StyleSheet.create({
         paddingBottom: 8,
         borderRadius: 4,
         fontSize: 14,
-        textAlign: "center"
+        textAlign: "center",
+        marginTop: 16
     }
 })
