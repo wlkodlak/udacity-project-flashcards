@@ -1,14 +1,14 @@
-import React from "react";
-import { Text, TouchableOpacity } from "react-native";
-import { StyleSheet, View } from "react-native";
+import React from "react"
+import { Text, TouchableOpacity } from "react-native"
+import { StyleSheet, View } from "react-native"
 
 export function QuizResultsView({
     correctCount, incorrectCount, onRestart, onBackToDeck
 }: {
-    correctCount: number;
-    incorrectCount: number;
-    onRestart: () => void;
-    onBackToDeck: () => void;
+    correctCount: number
+    incorrectCount: number
+    onRestart: () => void
+    onBackToDeck: () => void
 }) {
     const totalCount = correctCount + incorrectCount
     const percentage = correctCount * 100 / totalCount
@@ -52,7 +52,7 @@ export function QuizResultsView({
             </View>
 
         </View>
-    );
+    )
 }
 
 const quizResultsStyles = StyleSheet.create({

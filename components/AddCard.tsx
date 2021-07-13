@@ -1,10 +1,10 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
-import produce from "immer";
-import React, { useState } from "react";
-import { useCallback } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { AddCardNavigationProp, AddCardRouteProp } from "../navigation";
-import { DecksRepository, useDecksRepository, DeckState } from "../storage";
+import { useNavigation, useRoute } from "@react-navigation/native"
+import produce from "immer"
+import React, { useState } from "react"
+import { useCallback } from "react"
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { AddCardNavigationProp, AddCardRouteProp } from "../navigation"
+import { DecksRepository, useDecksRepository, DeckState } from "../storage"
 
 export default function AddCardScreenWired() {
     const route = useRoute<AddCardRouteProp>()

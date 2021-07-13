@@ -1,8 +1,8 @@
-import React from 'react';
-import { useContext } from 'react';
-import { DeckState } from './DeckState';
-import { DecksRepositoryAsyncStorage } from './DecksRepositoryAsyncStorage';
-import { DecksRepositoryInMemory } from './DecksRepositoryInMemory';
+import React from 'react'
+import { useContext } from 'react'
+import { DeckState } from './DeckState'
+import { DecksRepositoryAsyncStorage } from './DecksRepositoryAsyncStorage'
+import { DecksRepositoryInMemory } from './DecksRepositoryInMemory'
 
 export interface DecksRepository {
     getAllDecks(): Promise<DeckState[]>

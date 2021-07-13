@@ -1,27 +1,28 @@
-import { DeckState } from './DeckState';
-import { DecksRepository, Subscription } from './index';
+import { DeckState } from './DeckState'
+import { DecksRepository, Subscription } from './index'
 
 export class DecksRepositoryInMemory implements DecksRepository {
     private index: {
-        [id: string]: DeckState;
-    } = {};
+        [id: string]: DeckState
+    } = {}
+
     private subscribers = new Set<Subscription>()
 
     async getAllDecks(): Promise<DeckState[]> {
-        return Object.values(this.index);
+        return Object.values(this.index)
     }
 
     async getDeck(deckId: string): Promise<DeckState | undefined> {
-        return this.index[deckId];
+        return this.index[deckId]
     }
 
     async putDeck(deck: DeckState): Promise<void> {
-        this.index[deck.id] = deck;
+        this.index[deck.id] = deck
         this.notify()
     }
 
     async removeDeck(deckId: string): Promise<void> {
-        delete this.index[deckId];
+        delete this.index[deckId]
         this.notify()
     }
 

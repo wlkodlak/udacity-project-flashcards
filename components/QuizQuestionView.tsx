@@ -1,24 +1,24 @@
-import React, { useCallback } from "react";
-import { Pressable, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { View } from "react-native";
+import React, { useCallback } from "react"
+import { Pressable, StyleSheet, Text, TouchableOpacity } from "react-native"
+import { View } from "react-native"
 
 export function QuizQuestionView({
     cardNumber, cardsCount, question, answer, isShowingQuestion, onFlip, onCorrect, onIncorrect
 }: {
-    cardNumber: number;
-    cardsCount: number;
-    question: string;
-    answer: string;
-    isShowingQuestion: boolean;
-    onFlip: (willShowQuestion: boolean) => void;
-    onCorrect: () => void;
-    onIncorrect: () => void;
+    cardNumber: number
+    cardsCount: number
+    question: string
+    answer: string
+    isShowingQuestion: boolean
+    onFlip: (willShowQuestion: boolean) => void
+    onCorrect: () => void
+    onIncorrect: () => void
 }) {
-    const shownText = isShowingQuestion ? question : answer;
-    const flipText = isShowingQuestion ? "Show answer" : "Show question";
+    const shownText = isShowingQuestion ? question : answer
+    const flipText = isShowingQuestion ? "Show answer" : "Show question"
     const onPressFlip = useCallback(() => {
-        onFlip(!isShowingQuestion);
-    }, [isShowingQuestion, onFlip]);
+        onFlip(!isShowingQuestion)
+    }, [isShowingQuestion, onFlip])
 
     return (
         <View style={quizQuestionStyles.QuestionScreen}>
@@ -50,7 +50,7 @@ export function QuizQuestionView({
             </View>
 
         </View>
-    );
+    )
 }
 
 const quizQuestionStyles = StyleSheet.create({

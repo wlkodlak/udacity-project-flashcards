@@ -1,11 +1,11 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useCallback, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
-import useAsyncEffect from "use-async-effect";
-import { QuizNavigationProp, QuizRouteProp } from "../navigation";
-import { DecksRepository, DeckState, useDecksRepository } from "../storage";
-import { QuizQuestionView } from "./QuizQuestionView";
-import { QuizResultsView } from "./QuizResultsView";
+import { useNavigation, useRoute } from "@react-navigation/native"
+import React, { useCallback, useState } from "react"
+import { ActivityIndicator, View } from "react-native"
+import useAsyncEffect from "use-async-effect"
+import { QuizNavigationProp, QuizRouteProp } from "../navigation"
+import { DecksRepository, DeckState, useDecksRepository } from "../storage"
+import { QuizQuestionView } from "./QuizQuestionView"
+import { QuizResultsView } from "./QuizResultsView"
 
 export default function QuizScreenWired() {
     const navigation = useNavigation<QuizNavigationProp>()
@@ -61,7 +61,7 @@ export function QuizScreen({
 
     useAsyncEffect(async isMounted => {
         setInProgress(true)
-        const newDeck = await repository.getDeck(deckId);
+        const newDeck = await repository.getDeck(deckId)
         if (!isMounted()) return
         setDeck(newDeck)
         setInProgress(false)
