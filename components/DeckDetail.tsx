@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
 import React, { useCallback, useState } from "react"
+import { FunctionComponent } from "react"
 import { useEffect } from "react"
 import { ActivityIndicator, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import useAsyncEffect from "use-async-effect"
@@ -7,7 +8,7 @@ import { DeckDetailNavigationProp, DeckDetailRouteProp } from "../navigation"
 import { useDecksRepository, DeckState, DecksRepository } from "../storage"
 import { DeckView } from "./DeckList"
 
-export default function DeckDetailScreenWired() {
+const DeckDetailScreenWired: FunctionComponent = () => {
     const navigation = useNavigation<DeckDetailNavigationProp>()
     const route = useRoute<DeckDetailRouteProp>()
     const repository = useDecksRepository()
@@ -19,15 +20,19 @@ export default function DeckDetailScreenWired() {
     />)
 }
 
-export function DeckDetailScreen({
-    route,
-    navigation,
-    repository
-}: {
+export default DeckDetailScreenWired
+
+interface DeckDetailScreenProps {
     route: DeckDetailRouteProp,
     navigation: DeckDetailNavigationProp,
     repository: DecksRepository
-}) {
+}
+
+const DeckDetailScreen: FunctionComponent<DeckDetailScreenProps> = ({
+    route,
+    navigation,
+    repository
+}) => {
     const deckId = route.params?.deckId
     const [inProgress, setInProgress] = useState(false)
     const [version, setVersion] = useState(0)
@@ -78,19 +83,19 @@ export function DeckDetailScreen({
     }
 }
 
-function DeckDetailView(
-    {
-        deck,
-        onAddCard,
-        onStartQuiz,
-        onDeleteDeck
-    }: {
-        deck: DeckState,
-        onAddCard: (deck: DeckState) => void,
-        onStartQuiz: (deck: DeckState) => void,
-        onDeleteDeck: (deck: DeckState) => void
-    }
-) {
+interface DeckDetailViewProps {
+    deck: DeckState,
+    onAddCard: (deck: DeckState) => void,
+    onStartQuiz: (deck: DeckState) => void,
+    onDeleteDeck: (deck: DeckState) => void
+}
+
+const DeckDetailView: FunctionComponent<DeckDetailViewProps> = ({
+    deck,
+    onAddCard,
+    onStartQuiz,
+    onDeleteDeck
+}) => {
     const onAddCardAdapted = useCallback(() => {
         onAddCard(deck)
     }, [deck, onAddCard])

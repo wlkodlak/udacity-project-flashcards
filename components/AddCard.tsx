@@ -1,12 +1,12 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
 import produce from "immer"
-import React, { useState } from "react"
+import React, { FunctionComponent, useState } from "react"
 import { useCallback } from "react"
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { AddCardNavigationProp, AddCardRouteProp } from "../navigation"
 import { DecksRepository, useDecksRepository, DeckState } from "../storage"
 
-export default function AddCardScreenWired() {
+const AddCardScreenWired: FunctionComponent = () => {
     const route = useRoute<AddCardRouteProp>()
     const navigation = useNavigation<AddCardNavigationProp>()
     const repository = useDecksRepository()
@@ -17,17 +17,19 @@ export default function AddCardScreenWired() {
     />)
 }
 
-function AddCardScreen(
-    {
-        route,
-        navigation,
-        repository
-    }: {
-        route: AddCardRouteProp,
-        navigation: AddCardNavigationProp,
-        repository: DecksRepository
-    }
-) {
+export default AddCardScreenWired
+
+interface AddCardScreenProps {
+    route: AddCardRouteProp,
+    navigation: AddCardNavigationProp,
+    repository: DecksRepository
+}
+
+const AddCardScreen: FunctionComponent<AddCardScreenProps> = ({
+    route,
+    navigation,
+    repository
+}) => {
     const deckId = route.params?.deckId
 
     const [question, setQuestion] = useState("")
@@ -60,21 +62,23 @@ function AddCardScreen(
     )
 }
 
-function AddCardView({
-    question,
-    onQuestionChanged,
-    answer,
-    onAnswerChanged,
-    onSubmit,
-    submitDisabled
-}: {
+interface AddCardViewProps {
     question: string,
     onQuestionChanged: (question: string) => void,
     answer: string,
     onAnswerChanged: (answer: string) => void,
     onSubmit: () => void,
     submitDisabled: boolean
-}) {
+}
+
+const AddCardView: FunctionComponent<AddCardViewProps> = ({
+    question,
+    onQuestionChanged,
+    answer,
+    onAnswerChanged,
+    onSubmit,
+    submitDisabled
+}) => {
 
     const submitDisabledStyle = submitDisabled ? addCardStyles.SubmitDisabled : null
 
@@ -121,7 +125,6 @@ function AddCardView({
         </View>
     )
 }
-
 
 const addCardStyles = StyleSheet.create({
     AddCardView: {

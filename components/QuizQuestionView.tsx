@@ -1,10 +1,9 @@
 import React, { useCallback } from "react"
+import { FunctionComponent } from "react"
 import { Pressable, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { View } from "react-native"
 
-export function QuizQuestionView({
-    cardNumber, cardsCount, question, answer, isShowingQuestion, onFlip, onCorrect, onIncorrect
-}: {
+interface QuizQuestionViewProps {
     cardNumber: number
     cardsCount: number
     question: string
@@ -13,7 +12,11 @@ export function QuizQuestionView({
     onFlip: (willShowQuestion: boolean) => void
     onCorrect: () => void
     onIncorrect: () => void
-}) {
+}
+
+export const QuizQuestionView: FunctionComponent<QuizQuestionViewProps> = ({
+    cardNumber, cardsCount, question, answer, isShowingQuestion, onFlip, onCorrect, onIncorrect
+}) => {
     const shownText = isShowingQuestion ? question : answer
     const flipText = isShowingQuestion ? "Show answer" : "Show question"
     const onPressFlip = useCallback(() => {

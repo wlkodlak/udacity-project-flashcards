@@ -6,8 +6,9 @@ import { DecksNavigationProp } from '../navigation'
 import { DeckState } from '../storage/DeckState'
 import { DecksRepository, useDecksRepository } from '../storage'
 import useAsyncEffect from 'use-async-effect'
+import { FunctionComponent } from 'react'
 
-export default function DeckListScreenWired() {
+const DeckListScreenWired = () => {
     const navigation = useNavigation<DecksNavigationProp>()
     const repository = useDecksRepository()
     return (<DeckListScreen
@@ -16,13 +17,17 @@ export default function DeckListScreenWired() {
     />)
 }
 
-function DeckListScreen({
-    navigation,
-    repository
-}: {
+export default DeckListScreenWired
+
+interface DeckListScreenProps {
     navigation: DecksNavigationProp,
     repository: DecksRepository
-}) {
+}
+
+const DeckListScreen: FunctionComponent<DeckListScreenProps> = ({
+    navigation,
+    repository
+}) => {
     const [inProgress, setInProgress] = useState(false)
     const [decks, setDecks] = useState<DeckState[]>([])
     const [version, setVersion] = useState(0)
@@ -66,13 +71,15 @@ const DeckListViewExtractItemCount = (data: DeckState[]): number =>
 const DeckListViewExtractItem = (data: DeckState[], index: number): DeckState =>
     data[index]
 
-function DeckListView({
-    decks,
-    onClick
-}: {
+interface DeckListViewProps {
     decks: DeckState[],
     onClick: (deck: DeckState) => void
-}) {
+}
+
+const DeckListView: FunctionComponent<DeckListViewProps> = ({
+    decks,
+    onClick
+}) => {
     const renderItem = useCallback((item: ListRenderItemInfo<DeckState>): React.ReactElement => {
         return (
             <DeckListItem key={item.item.id} deck={item.item} onClick={onClick} />
@@ -88,13 +95,15 @@ function DeckListView({
     )
 }
 
-function DeckListItem({
-    deck,
-    onClick
-}: {
+interface DeckListItemProps {
     deck: DeckState,
     onClick: (deck: DeckState) => void
-}) {
+}
+
+const DeckListItem: FunctionComponent<DeckListItemProps> = ({
+    deck,
+    onClick
+}) => {
     const onPress = useCallback(() => {
         onClick(deck)
     }, [onClick, deck])
@@ -105,11 +114,13 @@ function DeckListItem({
     )
 }
 
-export function DeckView({
-    deck
-}: {
+interface DeckViewProps {
     deck: DeckState
-}) {
+}
+
+export const DeckView: FunctionComponent<DeckViewProps> = ({
+    deck
+}) => {
     return (
         <View style={deckStyles.DeckListItem}>
             <Text style={deckStyles.DeckListItemTitle}>{deck.title}</Text>

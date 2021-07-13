@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
 import React, { useCallback, useState } from "react"
+import { FunctionComponent } from "react"
 import { ActivityIndicator, View } from "react-native"
 import useAsyncEffect from "use-async-effect"
 import { QuizNavigationProp, QuizRouteProp } from "../navigation"
@@ -7,7 +8,7 @@ import { DecksRepository, DeckState, useDecksRepository } from "../storage"
 import { QuizQuestionView } from "./QuizQuestionView"
 import { QuizResultsView } from "./QuizResultsView"
 
-export default function QuizScreenWired() {
+const QuizScreenWired: FunctionComponent = () => {
     const navigation = useNavigation<QuizNavigationProp>()
     const route = useRoute<QuizRouteProp>()
     const repository = useDecksRepository()
@@ -20,15 +21,19 @@ export default function QuizScreenWired() {
     )
 }
 
-export function QuizScreen({
-    navigation,
-    route,
-    repository
-}: {
+export default QuizScreenWired
+
+interface QuizScreenProps {
     navigation: QuizNavigationProp,
     route: QuizRouteProp,
     repository: DecksRepository
-}) {
+}
+
+export const QuizScreen: FunctionComponent<QuizScreenProps> = ({
+    navigation,
+    route,
+    repository
+}) => {
     const deckId = route.params?.deckId
     const [inProgress, setInProgress] = useState(false)
     const [deck, setDeck] = useState<DeckState | undefined>()

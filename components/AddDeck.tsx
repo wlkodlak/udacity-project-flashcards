@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native"
 import React, { useCallback, useState } from "react"
+import { FunctionComponent } from "react"
 import { TouchableOpacity, StyleSheet, Text, TextInput, View } from "react-native"
 import { AddDeckNavigationProp } from "../navigation"
 import { DecksRepository, DeckState, useDecksRepository } from "../storage"
 
-export default function AddDeckScreenWired() {
+const AddDeckScreenWired: FunctionComponent = () => {
     const navigation = useNavigation<AddDeckNavigationProp>()
     const repository = useDecksRepository()
     return (<AddDeckScreen
@@ -13,13 +14,17 @@ export default function AddDeckScreenWired() {
     />)
 }
 
-function AddDeckScreen({
-    navigation,
-    repository
-}: {
+export default AddDeckScreenWired
+
+interface AddDeckScreenProps {
     navigation: AddDeckNavigationProp,
     repository: DecksRepository
-}) {
+}
+
+const AddDeckScreen: FunctionComponent<AddDeckScreenProps> = ({
+    navigation,
+    repository
+}) => {
     const [title, setTitle] = useState("")
 
     const onTitleChange = useCallback((title: string) => {
@@ -47,19 +52,19 @@ function AddDeckScreen({
     )
 }
 
-function AddDeckView(
-    {
-        title,
-        onTitleChange,
-        submitDisabled,
-        onSubmit
-    }: {
-        title: string,
-        onTitleChange: (title: string) => void,
-        submitDisabled: boolean,
-        onSubmit: () => void
-    }
-) {
+interface AddDeckViewProps {
+    title: string,
+    onTitleChange: (title: string) => void,
+    submitDisabled: boolean,
+    onSubmit: () => void
+}
+
+const AddDeckView: FunctionComponent<AddDeckViewProps> = ({
+    title,
+    onTitleChange,
+    submitDisabled,
+    onSubmit
+}) => {
     const submitDisabledStyle = submitDisabled ? addDeckStyles.SubmitDisabled : null
 
     return (

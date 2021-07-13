@@ -1,15 +1,17 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 import { Text, TouchableOpacity } from "react-native"
 import { StyleSheet, View } from "react-native"
 
-export function QuizResultsView({
-    correctCount, incorrectCount, onRestart, onBackToDeck
-}: {
+interface QuizResultsViewProps {
     correctCount: number
     incorrectCount: number
     onRestart: () => void
     onBackToDeck: () => void
-}) {
+}
+
+export const QuizResultsView: FunctionComponent<QuizResultsViewProps> = ({
+    correctCount, incorrectCount, onRestart, onBackToDeck
+}) => {
     const totalCount = correctCount + incorrectCount
     const percentage = correctCount * 100 / totalCount
     const isGoodScore = percentage >= 50
