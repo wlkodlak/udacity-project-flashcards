@@ -1,8 +1,9 @@
-import React from 'react'
-import { useContext } from 'react'
+import React, { useContext } from 'react'
+
 import { DeckState } from './DeckState'
 import { DecksRepositoryAsyncStorage } from './DecksRepositoryAsyncStorage'
-import { DecksRepositoryInMemory } from './DecksRepositoryInMemory'
+
+export type Subscription = () => void
 
 export interface DecksRepository {
     getAllDecks(): Promise<DeckState[]>
@@ -12,14 +13,12 @@ export interface DecksRepository {
     subscribe(callback: () => void): Subscription
 }
 
-export type Subscription = () => void
-
 export * from './DecksRepositoryInMemory'
 export * from './DecksRepositoryAsyncStorage'
 export * from './DeckState'
 
 export const DecksRepositoryContext = React.createContext<DecksRepository>(
-    new DecksRepositoryAsyncStorage()
+  new DecksRepositoryAsyncStorage()
 )
 
 export const useDecksRepository = (): DecksRepository => useContext(DecksRepositoryContext)

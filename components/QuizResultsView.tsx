@@ -1,6 +1,5 @@
-import React, { FunctionComponent } from "react"
-import { Text, TouchableOpacity } from "react-native"
-import { StyleSheet, View } from "react-native"
+import React, { FunctionComponent } from 'react'
+import { Text, TouchableOpacity, StyleSheet, View } from 'react-native'
 
 interface QuizResultsViewProps {
     correctCount: number
@@ -10,13 +9,13 @@ interface QuizResultsViewProps {
 }
 
 export const QuizResultsView: FunctionComponent<QuizResultsViewProps> = ({
-    correctCount, incorrectCount, onRestart, onBackToDeck
+  correctCount, incorrectCount, onRestart, onBackToDeck
 }) => {
-    const totalCount = correctCount + incorrectCount
-    const percentage = correctCount * 100 / totalCount
-    const isGoodScore = percentage >= 50
+  const totalCount = correctCount + incorrectCount
+  const percentage = correctCount * 100 / totalCount
+  const isGoodScore = percentage >= 50
 
-    return (
+  return (
         <View style={quizResultsStyles.Screen}>
 
             <Text style={quizResultsStyles.Number}>Done</Text>
@@ -54,83 +53,83 @@ export const QuizResultsView: FunctionComponent<QuizResultsViewProps> = ({
             </View>
 
         </View>
-    )
+  )
 }
 
 const quizResultsStyles = StyleSheet.create({
-    Screen: {
-        flexDirection: "column",
-        justifyContent: "space-between",
-        height: "100%",
-        padding: 16
-    },
-    Number: {
-        alignSelf: "flex-start",
-        color: "#000000",
-        fontSize: 20,
-        fontWeight: "normal",
-        textAlign: "left"
-    },
-    ScoreContainer: {
-        width: "100%",
-        alignItems: "center"
-    },
-    ScoreLabel: {
-        width: "100%",
-        color: "#000000",
-        fontSize: 12,
-        fontWeight: "normal",
-        textAlign: "center"
-    },
-    ScoreGood: {
-        width: "100%",
-        color: "#008800",
-        fontSize: 32,
-        fontWeight: "normal",
-        textAlign: "center"
-    },
-    ScoreBad: {
-        width: "100%",
-        color: "#ff0000",
-        fontSize: 32,
-        fontWeight: "normal",
-        textAlign: "center"
-    },
-    ButtonsContainer: {
-        width: "100%",
-        marginBottom: 48,
-        alignItems: "center"
-    },
-    RestartButton: {
-        width: "80%",
-        backgroundColor: "#008800",
-        paddingStart: 12,
-        paddingEnd: 12,
-        paddingTop: 8,
-        paddingBottom: 8,
-        borderRadius: 4,
-    },
-    RestartButtonText: {
-        color: "#ffffff",
-        fontSize: 14,
-        textAlign: "center"
-    },
-    BackButton: {
-        width: "80%",
-        backgroundColor: "#333333",
-        color: "#ffffff",
-        paddingStart: 12,
-        paddingEnd: 12,
-        paddingTop: 8,
-        paddingBottom: 8,
-        borderRadius: 4,
-        fontSize: 14,
-        textAlign: "center",
-        marginTop: 16
-    },
-    BackButtonText: {
-        color: "#ffffff",
-        fontSize: 14,
-        textAlign: "center"
-    },
+  Screen: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
+    padding: 16
+  },
+  Number: {
+    alignSelf: 'flex-start',
+    color: '#000000',
+    fontSize: 20,
+    fontWeight: 'normal',
+    textAlign: 'left'
+  },
+  ScoreContainer: {
+    width: '100%',
+    alignItems: 'center'
+  },
+  ScoreLabel: {
+    width: '100%',
+    color: '#000000',
+    fontSize: 12,
+    fontWeight: 'normal',
+    textAlign: 'center'
+  },
+  ScoreGood: {
+    width: '100%',
+    color: '#008800',
+    fontSize: 32,
+    fontWeight: 'normal',
+    textAlign: 'center'
+  },
+  ScoreBad: {
+    width: '100%',
+    color: '#ff0000',
+    fontSize: 32,
+    fontWeight: 'normal',
+    textAlign: 'center'
+  },
+  ButtonsContainer: {
+    width: '100%',
+    marginBottom: 48,
+    alignItems: 'center'
+  },
+  RestartButton: {
+    width: '80%',
+    backgroundColor: '#008800',
+    paddingStart: 12,
+    paddingEnd: 12,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderRadius: 4
+  },
+  RestartButtonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  BackButton: {
+    width: '80%',
+    backgroundColor: '#333333',
+    color: '#ffffff',
+    paddingStart: 12,
+    paddingEnd: 12,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderRadius: 4,
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 16
+  },
+  BackButtonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    textAlign: 'center'
+  }
 })

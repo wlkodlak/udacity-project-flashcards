@@ -17,37 +17,37 @@ const Stack = createStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<HomeTabParamList>()
 
 const tabBarOptions: BottomTabBarOptions = {
-  activeTintColor: "#ff0000",
-  inactiveTintColor: "#888888"
+  activeTintColor: '#ff0000',
+  inactiveTintColor: '#888888'
 }
 
 const homeTabOptions: BottomTabNavigationOptions = {
-  title: "Decks",
+  title: 'Decks',
   tabBarIcon: ({ color, size }) => (
     <Ionicons name="md-book" size={size} color={color} />
   )
 }
 
 const addDeckTabOptions: BottomTabNavigationOptions = {
-  title: "Add deck",
+  title: 'Add deck',
   tabBarIcon: ({ color, size }) => (
     <Ionicons name="add-circle" size={size} color={color} />
   )
 }
 
 const deckDetailStackOptions: StackNavigationOptions = {
-  title: "Deck details"
+  title: 'Deck details'
 }
 
 const addCardStackOptions: StackNavigationOptions = {
-  title: "Add card"
+  title: 'Add card'
 }
 
 const quizStackOptions: StackNavigationOptions = {
-  title: "Quiz"
+  title: 'Quiz'
 }
 
-function HomeTabs() {
+function HomeTabs () {
   return (
     <Tab.Navigator tabBarOptions={tabBarOptions}>
       <Tab.Screen
@@ -64,7 +64,7 @@ function HomeTabs() {
   )
 }
 
-export default function App() {
+export default function App () {
   return (
     <DecksRepositoryContext.Provider value={decksRepository}>
       <NavigationContainer>

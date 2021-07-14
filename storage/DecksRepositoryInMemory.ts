@@ -8,32 +8,32 @@ export class DecksRepositoryInMemory implements DecksRepository {
 
     private subscribers = new Set<Subscription>()
 
-    async getAllDecks(): Promise<DeckState[]> {
-        return Object.values(this.index)
+    async getAllDecks (): Promise<DeckState[]> {
+      return Object.values(this.index)
     }
 
-    async getDeck(deckId: string): Promise<DeckState | undefined> {
-        return this.index[deckId]
+    async getDeck (deckId: string): Promise<DeckState | undefined> {
+      return this.index[deckId]
     }
 
-    async putDeck(deck: DeckState): Promise<void> {
-        this.index[deck.id] = deck
-        this.notify()
+    async putDeck (deck: DeckState): Promise<void> {
+      this.index[deck.id] = deck
+      this.notify()
     }
 
-    async removeDeck(deckId: string): Promise<void> {
-        delete this.index[deckId]
-        this.notify()
+    async removeDeck (deckId: string): Promise<void> {
+      delete this.index[deckId]
+      this.notify()
     }
 
-    notify() {
-        Array.from(this.subscribers).forEach(it => it())
+    notify () {
+      Array.from(this.subscribers).forEach(it => it())
     }
 
-    subscribe(callback: () => void): () => void {
-        this.subscribers.add(callback)
-        return () => {
-            this.subscribers.delete(callback)
-        }
+    subscribe (callback: () => void): () => void {
+      this.subscribers.add(callback)
+      return () => {
+        this.subscribers.delete(callback)
+      }
     }
 }
