@@ -27,7 +27,7 @@ interface DeckDetailScreenProps {
     repository: DecksRepository
 }
 
-const DeckDetailScreen: FunctionComponent<DeckDetailScreenProps> = ({
+export const DeckDetailScreen: FunctionComponent<DeckDetailScreenProps> = ({
   route,
   navigation,
   repository
@@ -89,7 +89,7 @@ interface DeckDetailViewProps {
     onDeleteDeck: (deck: DeckState) => void
 }
 
-const DeckDetailView: FunctionComponent<DeckDetailViewProps> = ({
+export const DeckDetailView: FunctionComponent<DeckDetailViewProps> = ({
   deck,
   onAddCard,
   onStartQuiz,
@@ -120,6 +120,7 @@ const DeckDetailView: FunctionComponent<DeckDetailViewProps> = ({
                 <TouchableOpacity
                     onPress={onAddCardAdapted}
                     style={deckDetailStyles.DeckDetailButton}
+                    testID="DeckDetail-AddCard"
                 >
                     <Text>Add card</Text>
                 </TouchableOpacity>
@@ -127,7 +128,8 @@ const DeckDetailView: FunctionComponent<DeckDetailViewProps> = ({
                 <TouchableOpacity
                     onPress={onStartQuizAdapted}
                     style={deckDetailStyles.DeckDetailButton}
-                >
+                    testID="DeckDetail-Quiz"
+                    >
                     <Text>Start quiz</Text>
                 </TouchableOpacity>
 
@@ -135,7 +137,8 @@ const DeckDetailView: FunctionComponent<DeckDetailViewProps> = ({
 
             <Pressable
                 onPress={onDeleteDeckAdapted}
-            >
+                testID="DeckDetail-DeleteDeck"
+                >
                 <Text style={deckDetailStyles.DeckDetailLink}>Delete deck</Text>
             </Pressable>
 

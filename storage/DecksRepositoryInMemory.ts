@@ -26,6 +26,13 @@ export class DecksRepositoryInMemory implements DecksRepository {
       this.notify()
     }
 
+    setup (decks: DeckState[]) {
+      this.index = {}
+      decks.forEach(deck => {
+        this.index[deck.id] = deck
+      })
+    }
+
     notify () {
       Array.from(this.subscribers).forEach(it => it())
     }

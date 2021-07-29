@@ -23,7 +23,7 @@ interface DeckListScreenProps {
     repository: DecksRepository
 }
 
-const DeckListScreen: FunctionComponent<DeckListScreenProps> = ({
+export const DeckListScreen: FunctionComponent<DeckListScreenProps> = ({
   navigation,
   repository
 }) => {
@@ -51,14 +51,14 @@ const DeckListScreen: FunctionComponent<DeckListScreenProps> = ({
 
   if (inProgress) {
     return (
-            <View style={deckStyles.DeckListScreen}>
+            <View style={deckStyles.DeckListScreen} testID="DeckList-Loading">
                 <ActivityIndicator size="large" color="#ff0000" />
             </View>
     )
   }
 
   return (
-        <View style={deckStyles.DeckListScreen}>
+        <View style={deckStyles.DeckListScreen} testID="DeckList-Screen">
             <DeckListView onClick={onClick} decks={decks} />
         </View>
   )
@@ -75,7 +75,7 @@ interface DeckListViewProps {
     onClick: (deck: DeckState) => void
 }
 
-const DeckListView: FunctionComponent<DeckListViewProps> = ({
+export const DeckListView: FunctionComponent<DeckListViewProps> = ({
   decks,
   onClick
 }) => {
@@ -99,7 +99,7 @@ interface DeckListItemProps {
     onClick: (deck: DeckState) => void
 }
 
-const DeckListItem: FunctionComponent<DeckListItemProps> = ({
+export const DeckListItem: FunctionComponent<DeckListItemProps> = ({
   deck,
   onClick
 }) => {
@@ -107,7 +107,7 @@ const DeckListItem: FunctionComponent<DeckListItemProps> = ({
     onClick(deck)
   }, [onClick, deck])
   return (
-        <Pressable onPress={onPress}>
+        <Pressable onPress={onPress} accessibilityRole="button">
             <DeckView deck={deck} />
         </Pressable>
   )
@@ -122,8 +122,8 @@ export const DeckView: FunctionComponent<DeckViewProps> = ({
 }) => {
   return (
         <View style={deckStyles.DeckListItem}>
-            <Text style={deckStyles.DeckListItemTitle}>{deck.title}</Text>
-            <Text style={deckStyles.DeckListItemSubtitle}>{deck.cards.length} cards</Text>
+            <Text style={deckStyles.DeckListItemTitle} testID="DeckList-Title">{deck.title}</Text>
+            <Text style={deckStyles.DeckListItemSubtitle} testID="DeckList-Count">{deck.cards.length} cards</Text>
         </View>
   )
 }

@@ -21,7 +21,7 @@ interface AddDeckScreenProps {
     repository: DecksRepository
 }
 
-const AddDeckScreen: FunctionComponent<AddDeckScreenProps> = ({
+export const AddDeckScreen: FunctionComponent<AddDeckScreenProps> = ({
   navigation,
   repository
 }) => {
@@ -59,7 +59,7 @@ interface AddDeckViewProps {
     onSubmit: () => void
 }
 
-const AddDeckView: FunctionComponent<AddDeckViewProps> = ({
+export const AddDeckView: FunctionComponent<AddDeckViewProps> = ({
   title,
   onTitleChange,
   submitDisabled,
@@ -80,11 +80,13 @@ const AddDeckView: FunctionComponent<AddDeckViewProps> = ({
                 onSubmitEditing={onSubmit}
                 onChangeText={onTitleChange}
                 returnKeyType="done"
+                accessibilityLabel="Deck name"
             />
             <TouchableOpacity
                 onPress={onSubmit}
                 disabled={submitDisabled}
                 style={[addDeckStyles.Submit, submitDisabledStyle]}
+                accessibilityLabel="Add deck"
             >
                 <Text>Add deck</Text>
             </TouchableOpacity>
@@ -92,7 +94,7 @@ const AddDeckView: FunctionComponent<AddDeckViewProps> = ({
   )
 }
 
-const addDeckStyles = StyleSheet.create({
+export const addDeckStyles = StyleSheet.create({
   AddDeckView: {
     flexDirection: 'column',
     padding: 16,

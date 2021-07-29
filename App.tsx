@@ -23,6 +23,7 @@ const tabBarOptions: BottomTabBarOptions = {
 
 const homeTabOptions: BottomTabNavigationOptions = {
   title: 'Decks',
+  // eslint-disable-next-line react/display-name
   tabBarIcon: ({ color, size }) => (
     <Ionicons name="md-book" size={size} color={color} />
   )
@@ -30,6 +31,7 @@ const homeTabOptions: BottomTabNavigationOptions = {
 
 const addDeckTabOptions: BottomTabNavigationOptions = {
   title: 'Add deck',
+  // eslint-disable-next-line react/display-name
   tabBarIcon: ({ color, size }) => (
     <Ionicons name="add-circle" size={size} color={color} />
   )
