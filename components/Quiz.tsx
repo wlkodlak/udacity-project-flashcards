@@ -13,11 +13,11 @@ const QuizScreenWired: FunctionComponent = () => {
   const route = useRoute<QuizRouteProp>()
   const repository = useDecksRepository()
   return (
-        <QuizScreen
-            navigation={navigation}
-            route={route}
-            repository={repository}
-        />
+    <QuizScreen
+      navigation={navigation}
+      route={route}
+      repository={repository}
+    />
   )
 }
 
@@ -74,33 +74,33 @@ export const QuizScreen: FunctionComponent<QuizScreenProps> = ({
 
   if (inProgress || !deck) {
     return (
-            <View>
-                <ActivityIndicator size="large" color="#ff0000" />
-            </View>
+      <View>
+        <ActivityIndicator size="large" color="#ff0000" />
+      </View>
     )
   } else if (cardIndex < deck.cards.length) {
     const card = deck.cards[cardIndex]
     return (
-            <QuizQuestionView
-                cardNumber={cardIndex + 1}
-                cardsCount={deck.cards.length}
-                question={card.question}
-                answer={card.answer}
-                isShowingQuestion={isShowingQuestion}
-                onFlip={setShowingQuestion}
-                onCorrect={handleOnCorrect}
-                onIncorrect={handleOnIncorrect}
-            />
+      <QuizQuestionView
+        cardNumber={cardIndex + 1}
+        cardsCount={deck.cards.length}
+        question={card.question}
+        answer={card.answer}
+        isShowingQuestion={isShowingQuestion}
+        onFlip={setShowingQuestion}
+        onCorrect={handleOnCorrect}
+        onIncorrect={handleOnIncorrect}
+      />
     )
   } else {
     const incorrect = deck.cards.length - correct
     return (
-            <QuizResultsView
-                correctCount={correct}
-                incorrectCount={incorrect}
-                onRestart={handleRestart}
-                onBackToDeck={handleBackToDeck}
-            />
+      <QuizResultsView
+        correctCount={correct}
+        incorrectCount={incorrect}
+        onRestart={handleRestart}
+        onBackToDeck={handleBackToDeck}
+      />
     )
   }
 }

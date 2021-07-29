@@ -16,43 +16,80 @@ export const QuizResultsView: FunctionComponent<QuizResultsViewProps> = ({
   const isGoodScore = percentage >= 50
 
   return (
-        <View style={quizResultsStyles.Screen}>
+    <View
+      style={quizResultsStyles.Screen}
+    >
 
-            <Text style={quizResultsStyles.Number}>Done</Text>
+      <Text
+        style={quizResultsStyles.Number}
+        testID="QuizQuestion-Number"
+      >
+        Done
+      </Text>
 
-            <View style={quizResultsStyles.ScoreContainer}>
-                <Text style={quizResultsStyles.ScoreLabel}>Quiz complete!</Text>
-                <Text style={isGoodScore ? quizResultsStyles.ScoreGood : quizResultsStyles.ScoreBad}>
-                    {correctCount} / {totalCount}
-                </Text>
-            </View>
+      <View
+        style={quizResultsStyles.ScoreContainer}
+      >
+        <Text
+          style={quizResultsStyles.ScoreLabel}
+        >
+          Quiz complete!
+        </Text>
 
-            <View style={quizResultsStyles.ScoreContainer}>
-                <Text style={quizResultsStyles.ScoreLabel}>Percentage correct</Text>
-                <Text style={isGoodScore ? quizResultsStyles.ScoreGood : quizResultsStyles.ScoreBad}>
-                    {percentage.toFixed(0)}%
-                </Text>
-            </View>
+        <Text
+          style={isGoodScore ? quizResultsStyles.ScoreGood : quizResultsStyles.ScoreBad}
+          testID="QuizResults-Count"
+        >
+          {correctCount} / {totalCount}
+        </Text>
+      </View>
 
-            <View style={quizResultsStyles.ButtonsContainer}>
+      <View
+        style={quizResultsStyles.ScoreContainer}
+      >
+        <Text
+          style={quizResultsStyles.ScoreLabel}
+        >
+          Percentage correct
+        </Text>
 
-                <TouchableOpacity
-                    onPress={onRestart}
-                    style={quizResultsStyles.RestartButton}
-                >
-                    <Text style={quizResultsStyles.RestartButtonText}>Restart quiz</Text>
-                </TouchableOpacity>
+        <Text
+          style={isGoodScore ? quizResultsStyles.ScoreGood : quizResultsStyles.ScoreBad}
+          testID="QuizResults-Percent"
+        >
+          {percentage.toFixed(0)}%
+        </Text>
+      </View>
 
-                <TouchableOpacity
-                    onPress={onBackToDeck}
-                    style={quizResultsStyles.BackButton}
-                >
-                    <Text style={quizResultsStyles.BackButtonText}>Back to deck</Text>
-                </TouchableOpacity>
+      <View style={quizResultsStyles.ButtonsContainer}>
 
-            </View>
+        <TouchableOpacity
+          onPress={onRestart}
+          style={quizResultsStyles.RestartButton}
+          testID="QuizResults-Restart"
+        >
+          <Text
+            style={quizResultsStyles.RestartButtonText}
+          >
+            Restart quiz
+          </Text>
+        </TouchableOpacity>
 
-        </View>
+        <TouchableOpacity
+          onPress={onBackToDeck}
+          style={quizResultsStyles.BackButton}
+          testID="QuizQuestion-Back"
+        >
+          <Text
+            style={quizResultsStyles.BackButtonText}
+          >
+            Back to deck
+          </Text>
+        </TouchableOpacity>
+
+      </View>
+
+    </View>
   )
 }
 

@@ -23,35 +23,58 @@ export const QuizQuestionView: FunctionComponent<QuizQuestionViewProps> = ({
   }, [isShowingQuestion, onFlip])
 
   return (
-        <View style={quizQuestionStyles.QuestionScreen}>
+    <View
+      style={quizQuestionStyles.QuestionScreen}
+    >
 
-            <Text style={quizQuestionStyles.Number}>{cardNumber} / {cardsCount}</Text>
+      <Text
+        style={quizQuestionStyles.Number}
+        testID="QuizQuestion-Number"
+      >
+        {cardNumber} / {cardsCount}
+      </Text>
 
-            <Text style={quizQuestionStyles.Text}>{shownText}</Text>
+      <Text
+        style={quizQuestionStyles.Text}
+        testID="QuizQuestion-Text"
+      >
+        {shownText}
+      </Text>
 
-            <Pressable onPress={onPressFlip}>
-                <Text style={quizQuestionStyles.FlipButton}>{flipText}</Text>
-            </Pressable>
+      <Pressable
+        onPress={onPressFlip}
+        testID="QuizQuestion-Flip"
+      >
+        <Text
+          style={quizQuestionStyles.FlipButton}
+        >
+          {flipText}
+        </Text>
+      </Pressable>
 
-            <View style={quizQuestionStyles.ButtonsContainer}>
+      <View
+        style={quizQuestionStyles.ButtonsContainer}
+      >
 
-                <TouchableOpacity
-                    onPress={onCorrect}
-                    style={quizQuestionStyles.CorrectButton}
-                >
-                    <Text>Correct</Text>
-                </TouchableOpacity>
+        <TouchableOpacity
+            onPress={onCorrect}
+            style={quizQuestionStyles.CorrectButton}
+            testID="QuizQuestion-Correct"
+        >
+          <Text>Correct</Text>
+        </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={onIncorrect}
-                    style={quizQuestionStyles.IncorrectButton}
-                >
-                    <Text>Incorrect</Text>
-                </TouchableOpacity>
+        <TouchableOpacity
+            onPress={onIncorrect}
+            style={quizQuestionStyles.IncorrectButton}
+            testID="QuizQuestion-Incorrect"
+        >
+          <Text>Incorrect</Text>
+        </TouchableOpacity>
 
-            </View>
+      </View>
 
-        </View>
+    </View>
   )
 }
 

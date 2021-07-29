@@ -12,11 +12,13 @@ const DeckDetailScreenWired: FunctionComponent = () => {
   const route = useRoute<DeckDetailRouteProp>()
   const repository = useDecksRepository()
 
-  return (<DeckDetailScreen
-        route={route}
-        navigation={navigation}
-        repository={repository}
-    />)
+  return (
+    <DeckDetailScreen
+      route={route}
+      navigation={navigation}
+      repository={repository}
+    />
+  )
 }
 
 export default DeckDetailScreenWired
@@ -66,18 +68,18 @@ export const DeckDetailScreen: FunctionComponent<DeckDetailScreenProps> = ({
 
   if (inProgress || !deck) {
     return (
-            <View>
-                <ActivityIndicator size="large" color="#ff0000" />
-            </View>
+      <View>
+        <ActivityIndicator size="large" color="#ff0000" />
+      </View>
     )
   } else {
     return (
-            <DeckDetailView
-                deck={deck}
-                onAddCard={onAddCard}
-                onStartQuiz={onStartQuiz}
-                onDeleteDeck={onDeleteDeck}
-            />
+      <DeckDetailView
+        deck={deck}
+        onAddCard={onAddCard}
+        onStartQuiz={onStartQuiz}
+        onDeleteDeck={onDeleteDeck}
+      />
     )
   }
 }
@@ -108,41 +110,41 @@ export const DeckDetailView: FunctionComponent<DeckDetailViewProps> = ({
   }, [deck, onDeleteDeck])
 
   return (
-        <View
-            style={deckDetailStyles.DeckDetailScreen}
+    <View
+      style={deckDetailStyles.DeckDetailScreen}
+    >
+      <DeckView deck={deck} />
+
+      <View
+        style={deckDetailStyles.DeckDetailButtonsContainer}
+      >
+
+        <TouchableOpacity
+          onPress={onAddCardAdapted}
+          style={deckDetailStyles.DeckDetailButton}
+          testID="DeckDetail-AddCard"
         >
-            <DeckView deck={deck} />
+            <Text>Add card</Text>
+        </TouchableOpacity>
 
-            <View
-                style={deckDetailStyles.DeckDetailButtonsContainer}
-            >
+        <TouchableOpacity
+          onPress={onStartQuizAdapted}
+          style={deckDetailStyles.DeckDetailButton}
+          testID="DeckDetail-Quiz"
+        >
+          <Text>Start quiz</Text>
+        </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={onAddCardAdapted}
-                    style={deckDetailStyles.DeckDetailButton}
-                    testID="DeckDetail-AddCard"
-                >
-                    <Text>Add card</Text>
-                </TouchableOpacity>
+      </View>
 
-                <TouchableOpacity
-                    onPress={onStartQuizAdapted}
-                    style={deckDetailStyles.DeckDetailButton}
-                    testID="DeckDetail-Quiz"
-                    >
-                    <Text>Start quiz</Text>
-                </TouchableOpacity>
+      <Pressable
+        onPress={onDeleteDeckAdapted}
+        testID="DeckDetail-DeleteDeck"
+      >
+        <Text style={deckDetailStyles.DeckDetailLink}>Delete deck</Text>
+      </Pressable>
 
-            </View>
-
-            <Pressable
-                onPress={onDeleteDeckAdapted}
-                testID="DeckDetail-DeleteDeck"
-                >
-                <Text style={deckDetailStyles.DeckDetailLink}>Delete deck</Text>
-            </Pressable>
-
-        </View>
+    </View>
   )
 }
 

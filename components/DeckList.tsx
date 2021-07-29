@@ -10,10 +10,12 @@ import useAsyncEffect from 'use-async-effect'
 const DeckListScreenWired = () => {
   const navigation = useNavigation<DecksNavigationProp>()
   const repository = useDecksRepository()
-  return (<DeckListScreen
-        navigation={navigation}
-        repository={repository}
-    />)
+  return (
+    <DeckListScreen
+      navigation={navigation}
+      repository={repository}
+    />
+  )
 }
 
 export default DeckListScreenWired
@@ -51,16 +53,16 @@ export const DeckListScreen: FunctionComponent<DeckListScreenProps> = ({
 
   if (inProgress) {
     return (
-            <View style={deckStyles.DeckListScreen} testID="DeckList-Loading">
-                <ActivityIndicator size="large" color="#ff0000" />
-            </View>
+      <View style={deckStyles.DeckListScreen} testID="DeckList-Loading">
+        <ActivityIndicator size="large" color="#ff0000" />
+      </View>
     )
   }
 
   return (
-        <View style={deckStyles.DeckListScreen} testID="DeckList-Screen">
-            <DeckListView onClick={onClick} decks={decks} />
-        </View>
+    <View style={deckStyles.DeckListScreen} testID="DeckList-Screen">
+      <DeckListView onClick={onClick} decks={decks} />
+    </View>
   )
 }
 
@@ -81,16 +83,21 @@ export const DeckListView: FunctionComponent<DeckListViewProps> = ({
 }) => {
   const renderItem = useCallback((item: ListRenderItemInfo<DeckState>): React.ReactElement => {
     return (
-            <DeckListItem key={item.item.id} deck={item.item} onClick={onClick} />
+      <DeckListItem
+        key={item.item.id}
+        deck={item.item}
+        onClick={onClick}
+      />
     )
   }, [onClick])
   return (
-        <VirtualizedList
-            style={deckStyles.DeckListView}
-            data={decks}
-            getItemCount={DeckListViewExtractItemCount}
-            getItem={DeckListViewExtractItem}
-            renderItem={renderItem} />
+    <VirtualizedList
+      style={deckStyles.DeckListView}
+      data={decks}
+      getItemCount={DeckListViewExtractItemCount}
+      getItem={DeckListViewExtractItem}
+      renderItem={renderItem}
+    />
   )
 }
 
@@ -107,9 +114,14 @@ export const DeckListItem: FunctionComponent<DeckListItemProps> = ({
     onClick(deck)
   }, [onClick, deck])
   return (
-        <Pressable onPress={onPress} accessibilityRole="button">
-            <DeckView deck={deck} />
-        </Pressable>
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+    >
+      <DeckView
+        deck={deck}
+      />
+    </Pressable>
   )
 }
 
@@ -121,10 +133,22 @@ export const DeckView: FunctionComponent<DeckViewProps> = ({
   deck
 }) => {
   return (
-        <View style={deckStyles.DeckListItem}>
-            <Text style={deckStyles.DeckListItemTitle} testID="DeckList-Title">{deck.title}</Text>
-            <Text style={deckStyles.DeckListItemSubtitle} testID="DeckList-Count">{deck.cards.length} cards</Text>
-        </View>
+    <View
+      style={deckStyles.DeckListItem}
+    >
+      <Text
+        style={deckStyles.DeckListItemTitle}
+        testID="DeckList-Title"
+      >
+        {deck.title}
+      </Text>
+      <Text
+        style={deckStyles.DeckListItemSubtitle}
+        testID="DeckList-Count"
+      >
+        {deck.cards.length} cards
+      </Text>
+    </View>
   )
 }
 

@@ -10,11 +10,13 @@ const AddCardScreenWired: FunctionComponent = () => {
   const route = useRoute<AddCardRouteProp>()
   const navigation = useNavigation<AddCardNavigationProp>()
   const repository = useDecksRepository()
-  return (<AddCardScreen
-        route={route}
-        navigation={navigation}
-        repository={repository}
-    />)
+  return (
+    <AddCardScreen
+      route={route}
+      navigation={navigation}
+      repository={repository}
+    />
+  )
 }
 
 export default AddCardScreenWired
@@ -25,7 +27,7 @@ interface AddCardScreenProps {
     repository: DecksRepository
 }
 
-const AddCardScreen: FunctionComponent<AddCardScreenProps> = ({
+export const AddCardScreen: FunctionComponent<AddCardScreenProps> = ({
   route,
   navigation,
   repository
@@ -51,14 +53,14 @@ const AddCardScreen: FunctionComponent<AddCardScreenProps> = ({
   }, [repository, navigation, deckId, question, answer])
 
   return (
-        <AddCardView
-            question={question}
-            onQuestionChanged={setQuestion}
-            answer={answer}
-            onAnswerChanged={setAnswer}
-            submitDisabled={submitDisabled}
-            onSubmit={onSubmit}
-        />
+    <AddCardView
+      question={question}
+      onQuestionChanged={setQuestion}
+      answer={answer}
+      onAnswerChanged={setAnswer}
+      submitDisabled={submitDisabled}
+      onSubmit={onSubmit}
+    />
   )
 }
 interface AddCardViewProps {
@@ -70,7 +72,7 @@ interface AddCardViewProps {
     submitDisabled: boolean
 }
 
-const AddCardView: FunctionComponent<AddCardViewProps> = ({
+export const AddCardView: FunctionComponent<AddCardViewProps> = ({
   question,
   onQuestionChanged,
   answer,
@@ -81,50 +83,53 @@ const AddCardView: FunctionComponent<AddCardViewProps> = ({
   const submitDisabledStyle = submitDisabled ? addCardStyles.SubmitDisabled : null
 
   return (
-        <View
-            style={addCardStyles.AddCardView}
+    <View
+      style={addCardStyles.AddCardView}
+    >
+      <View
+        style={addCardStyles.Container}
+      >
+        <Text
+          style={addCardStyles.Message}
         >
-            <View
-                style={addCardStyles.Container}
-            >
-                <Text
-                    style={addCardStyles.Message}
-                >
-                    Add a question
-                </Text>
+          Add a question
+        </Text>
 
-                <TextInput
-                    style={addCardStyles.Input}
-                    value={question}
-                    onChangeText={onQuestionChanged}
-                    returnKeyType="next"
-                    placeholder="Question"
-                />
+        <TextInput
+          style={addCardStyles.Input}
+          value={question}
+          onChangeText={onQuestionChanged}
+          returnKeyType="next"
+          placeholder="Question"
+          testID="AddCard-Question"
+        />
 
-                <TextInput
-                    style={addCardStyles.Input}
-                    value={answer}
-                    onSubmitEditing={onSubmit}
-                    onChangeText={onAnswerChanged}
-                    returnKeyType="done"
-                    placeholder="Answer"
-                />
+        <TextInput
+          style={addCardStyles.Input}
+          value={answer}
+          onSubmitEditing={onSubmit}
+          onChangeText={onAnswerChanged}
+          returnKeyType="done"
+          placeholder="Answer"
+          testID="AddCard-Answer"
+        />
 
-            </View>
+      </View>
 
-            <TouchableOpacity
-                onPress={onSubmit}
-                disabled={submitDisabled}
-                style={[addCardStyles.Submit, submitDisabledStyle]}
-            >
-                <Text>Add deck</Text>
-            </TouchableOpacity>
+      <TouchableOpacity
+        onPress={onSubmit}
+        disabled={submitDisabled}
+        style={[addCardStyles.Submit, submitDisabledStyle]}
+        testID="AddCard-Submit"
+      >
+        <Text>Add deck</Text>
+      </TouchableOpacity>
 
-        </View>
+    </View>
   )
 }
 
-const addCardStyles = StyleSheet.create({
+export const addCardStyles = StyleSheet.create({
   AddCardView: {
     flexDirection: 'column',
     padding: 16,

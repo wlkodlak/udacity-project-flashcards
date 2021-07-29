@@ -8,9 +8,10 @@ import { DecksRepository, DeckState, useDecksRepository } from '../storage'
 const AddDeckScreenWired: FunctionComponent = () => {
   const navigation = useNavigation<AddDeckNavigationProp>()
   const repository = useDecksRepository()
-  return (<AddDeckScreen
-        navigation={navigation}
-        repository={repository}
+  return (
+    <AddDeckScreen
+      navigation={navigation}
+      repository={repository}
     />)
 }
 
@@ -43,12 +44,12 @@ export const AddDeckScreen: FunctionComponent<AddDeckScreenProps> = ({
   }, [title, repository, setTitle, navigation])
 
   return (
-        <AddDeckView
-            title={title}
-            onTitleChange={onTitleChange}
-            submitDisabled={title === ''}
-            onSubmit={onSubmit}
-        />
+    <AddDeckView
+      title={title}
+      onTitleChange={onTitleChange}
+      submitDisabled={title === ''}
+      onSubmit={onSubmit}
+    />
   )
 }
 
@@ -68,29 +69,29 @@ export const AddDeckView: FunctionComponent<AddDeckViewProps> = ({
   const submitDisabledStyle = submitDisabled ? addDeckStyles.SubmitDisabled : null
 
   return (
-        <View style={addDeckStyles.AddDeckView}>
-            <Text
-                style={addDeckStyles.Message}
-            >
-                What is the name of the new deck?
-            </Text>
-            <TextInput
-                style={addDeckStyles.Input}
-                value={title}
-                onSubmitEditing={onSubmit}
-                onChangeText={onTitleChange}
-                returnKeyType="done"
-                accessibilityLabel="Deck name"
-            />
-            <TouchableOpacity
-                onPress={onSubmit}
-                disabled={submitDisabled}
-                style={[addDeckStyles.Submit, submitDisabledStyle]}
-                accessibilityLabel="Add deck"
-            >
-                <Text>Add deck</Text>
-            </TouchableOpacity>
-        </View>
+    <View style={addDeckStyles.AddDeckView}>
+      <Text
+        style={addDeckStyles.Message}
+      >
+        What is the name of the new deck?
+      </Text>
+      <TextInput
+        style={addDeckStyles.Input}
+        value={title}
+        onSubmitEditing={onSubmit}
+        onChangeText={onTitleChange}
+        returnKeyType="done"
+        accessibilityLabel="Deck name"
+      />
+      <TouchableOpacity
+        onPress={onSubmit}
+        disabled={submitDisabled}
+        style={[addDeckStyles.Submit, submitDisabledStyle]}
+        accessibilityLabel="Add deck"
+      >
+        <Text>Add deck</Text>
+      </TouchableOpacity>
+    </View>
   )
 }
 
