@@ -1,13 +1,13 @@
 import React from 'react'
 import { render } from '@testing-library/react-native'
-import { View } from 'react-native'
+import App from '../App'
 
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper')
 
-describe('RN testing', () => {
-  it('initialized', async () => {
-    const tree = render(<View testID="Root" />)
-    const view = await tree.findByTestId('Root')
-    expect(view).toBeTruthy()
+describe('App', () => {
+  it('initially shows decks list', async () => {
+    const tree = render(<App />)
+    const deckList = await tree.findByTestId('DeckList-Screen')
+    expect(deckList).toBeTruthy()
   })
 })
