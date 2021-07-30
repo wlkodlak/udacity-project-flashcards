@@ -74,7 +74,7 @@ export const QuizScreen: FunctionComponent<QuizScreenProps> = ({
 
   if (inProgress || !deck) {
     return (
-      <View>
+      <View testID="Quiz-Loading">
         <ActivityIndicator size="large" color="#ff0000" />
       </View>
     )

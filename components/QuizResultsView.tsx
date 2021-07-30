@@ -78,7 +78,7 @@ export const QuizResultsView: FunctionComponent<QuizResultsViewProps> = ({
         <TouchableOpacity
           onPress={onBackToDeck}
           style={quizResultsStyles.BackButton}
-          testID="QuizQuestion-Back"
+          testID="QuizResults-GoBack"
         >
           <Text
             style={quizResultsStyles.BackButtonText}

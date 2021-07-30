@@ -44,8 +44,23 @@ describe('QuizQuestion', () => {
     return await waitFor(() => navigatedRoute)
   }
 
+  const getQuestionNumber = () => tree.getByTestId('QuizQuestion-Number')
+  const getQuestionText = () => tree.getByTestId('QuizQuestion-Text')
+  const getQuestionFlip = () => tree.getByTestId('QuizQuestion-Flip')
+  const getQuestionCorrect = () => tree.getByTestId('QuizQuestion-Correct')
+  const getQuestionIncorrect = () => tree.getByTestId('QuizQuestion-Incorrect')
+
+  const findQuestionNumber = () => tree.findByTestId('QuizQuestion-Number')
+  const findQuestionText = () => tree.findByTestId('QuizQuestion-Text')
+  const findQuestionCorrect = () => tree.findByTestId('QuizQuestion-Correct')
+  const findScoreCount = () => tree.findByTestId('QuizResults-Count')
+  const findScorePercent = () => tree.findByTestId('QuizResults-Percent')
+  const findRestart = () => tree.findByTestId('QuizResults-Restart')
+  const findGoBack = () => tree.findByTestId('QuizResults-GoBack')
+
   beforeEach(async () => {
     jest.clearAllMocks()
+    repository.setup([deck])
     tree = render(
       <QuizScreen
         repository={repository}
@@ -53,39 +68,169 @@ describe('QuizQuestion', () => {
         route={route}
       />
     )
+    await waitFor(() => !tree.queryByTestId('Quiz-Loading'))
   })
 
-  const getQuestionNumber = () => tree.getByTestId('QuizQuestion-Number')
-  const getQuestionText = () => tree.getByTestId('QuizQuestion-Text')
-  const getQuestionFlip = () => tree.getByTestId('QuizQuestion-Flip')
-  const getQuestionCorrect = () => tree.getByTestId('QuizQuestion-Correct')
-  const getQuestionIncorrect = () => tree.getByTestId('QuizQuestion-Incorrect')
-  const getScoreCount = () => tree.getByTestId('QuizResults-Count')
-  const getScorePercent = () => tree.getByTestId('QuizResults-Percent')
-  const getRestart = () => tree.getByTestId('QuizResults-Restart')
-  const getGoBack = () => tree.getByTestId('QuizResults-Back')
+  it('initially shows question of first card', async () => {
+    const questionText = getQuestionText()
 
-  const findQuestionNumber = () => tree.findByTestId('QuizQuestion-Number')
-  const findQuestionText = () => tree.findByTestId('QuizQuestion-Text')
-  const findQuestionFlip = () => tree.findByTestId('QuizQuestion-Flip')
-  const findQuestionCorrect = () => tree.findByTestId('QuizQuestion-Correct')
-  const findQuestionIncorrect = () => tree.findByTestId('QuizQuestion-Incorrect')
-  const findScoreCount = () => tree.findByTestId('QuizResults-Count')
-  const findScorePercent = () => tree.findByTestId('QuizResults-Percent')
-  const findRestart = () => tree.findByTestId('QuizResults-Restart')
-  const findGoBack = () => tree.findByTestId('QuizResults-Back')
+    expect(questionText).toHaveTextContent('Question 1')
+  })
 
-  it.todo('initially shows question of first card')
-  it.todo('when clicked on flip, shows the answer')
-  it.todo('when clicked on flip twice, shows question again')
-  it.todo('shows question number and total count')
-  it.todo('when clicked on correct, shows next question')
-  it.todo('when clicked on incorrect, shows next question')
-  it.todo('when clicked on correct on last question, shows results')
-  it.todo('when clicked on incorrect on last question, shows results')
-  it.todo('results show number of correct answers')
-  it.todo('results show percentage of correct answers')
-  it.todo('restart button shows first question')
-  it.todo('restart button resets score')
-  it.todo('go back button navigates to deck details')
+  it('when clicked on flip, shows the answer', async () => {
+    const flip = getQuestionFlip()
+    fireEvent.press(flip)
+
+    const questionText = await findQuestionText()
+
+    expect(questionText).toHaveTextContent('Answer 1')
+  })
+
+  it('when clicked on flip twice, shows question again', async () => {
+    const flip = getQuestionFlip()
+    fireEvent.press(flip)
+    fireEvent.press(flip)
+
+    const questionText = await findQuestionText()
+
+    expect(questionText).toHaveTextContent('Question 1')
+  })
+
+  it('shows question number and total count', async () => {
+    const questionNumber = getQuestionNumber()
+
+    expect(questionNumber).toHaveTextContent('1 / 4')
+  })
+
+  it('when clicked on correct, shows next question', async () => {
+    const flip = getQuestionFlip()
+    const correct = getQuestionCorrect()
+
+    fireEvent.press(flip)
+    fireEvent.press(correct)
+
+    const questionNumber = await findQuestionNumber()
+    const questionText = getQuestionText()
+
+    expect(questionNumber).toHaveTextContent('2 / 4')
+    expect(questionText).toHaveTextContent('Question 2')
+  })
+
+  it('when clicked on incorrect, shows next question', async () => {
+    const flip = getQuestionFlip()
+    const incorrect = getQuestionIncorrect()
+
+    fireEvent.press(flip)
+    fireEvent.press(incorrect)
+
+    const questionNumber = await findQuestionNumber()
+    const questionText = getQuestionText()
+
+    expect(questionNumber).toHaveTextContent('2 / 4')
+    expect(questionText).toHaveTextContent('Question 2')
+  })
+
+  it('when clicked on correct on last question, shows results', async () => {
+    const correct = getQuestionCorrect()
+    const incorrect = getQuestionIncorrect()
+
+    fireEvent.press(correct)
+    fireEvent.press(incorrect)
+    fireEvent.press(correct)
+    fireEvent.press(correct)
+
+    const questionNumber = await findQuestionNumber()
+    expect(questionNumber).toHaveTextContent('Done')
+  })
+
+  it('when clicked on incorrect on last question, shows results', async () => {
+    const correct = getQuestionCorrect()
+    const incorrect = getQuestionIncorrect()
+
+    fireEvent.press(correct)
+    fireEvent.press(incorrect)
+    fireEvent.press(correct)
+    fireEvent.press(incorrect)
+
+    const questionNumber = await findQuestionNumber()
+    expect(questionNumber).toHaveTextContent('Done')
+  })
+
+  it('results show number of correct answers', async () => {
+    const correct = getQuestionCorrect()
+    const incorrect = getQuestionIncorrect()
+
+    fireEvent.press(correct)
+    fireEvent.press(incorrect)
+    fireEvent.press(correct)
+    fireEvent.press(correct)
+
+    const score = await findScoreCount()
+    expect(score).toHaveTextContent('3 / 4')
+  })
+
+  it('results show percentage of correct answers', async () => {
+    const correct = getQuestionCorrect()
+    const incorrect = getQuestionIncorrect()
+
+    fireEvent.press(correct)
+    fireEvent.press(incorrect)
+    fireEvent.press(correct)
+    fireEvent.press(correct)
+
+    const score = await findScorePercent()
+    expect(score).toHaveTextContent('75%')
+  })
+
+  it('restart button shows first question', async () => {
+    const correct = getQuestionCorrect()
+    const incorrect = getQuestionIncorrect()
+    fireEvent.press(correct)
+    fireEvent.press(incorrect)
+    fireEvent.press(correct)
+    fireEvent.press(correct)
+
+    const restart = await findRestart()
+    fireEvent.press(restart)
+
+    const questionText = await findQuestionText()
+    expect(questionText).toHaveTextContent('Question 1')
+  })
+
+  it('restart button resets score', async () => {
+    let correct = getQuestionCorrect()
+    let incorrect = getQuestionIncorrect()
+    fireEvent.press(correct)
+    fireEvent.press(incorrect)
+    fireEvent.press(correct)
+    fireEvent.press(correct)
+
+    const restart = await findRestart()
+    fireEvent.press(restart)
+
+    correct = await findQuestionCorrect()
+    incorrect = getQuestionIncorrect()
+    fireEvent.press(incorrect)
+    fireEvent.press(incorrect)
+    fireEvent.press(incorrect)
+    fireEvent.press(correct)
+    const score = await findScorePercent()
+    expect(score).toHaveTextContent('25%')
+  })
+
+  it('go back button navigates to deck details', async () => {
+    const correct = getQuestionCorrect()
+    const incorrect = getQuestionIncorrect()
+    fireEvent.press(correct)
+    fireEvent.press(incorrect)
+    fireEvent.press(correct)
+    fireEvent.press(correct)
+
+    const goBack = await findGoBack()
+    fireEvent.press(goBack)
+
+    const navigatedTo = await waitForNavigation()
+    expect(navigatedTo?.route).toBe('DeckDetail')
+    expect(navigatedTo?.params.deckId).toBe(deck.id)
+  })
 })
